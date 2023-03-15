@@ -48,3 +48,4 @@ To be added upon submission
 * [code_for_figures](./figures/code_for_figures) - folder with scripts to create figures
    * [figure_02_study_area_map_v01.R](./figures/code_for_figures/figure_02_study_area_map_v01.R) - make study area map
    * [figure_s1_s2_simulated_communit_v01.R](./figures/code_for_figures/figure_s1_s2_simulated_communit_v01.R) - plot simulated community example 
+   * [figures_3_4_tables_s2_s3_v01.R](./figures/code_for_figures/figures_3_4_tables_s2_s3_v01.R) - create figures 3 & 4, plus tables s2 and s3
