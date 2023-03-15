@@ -23,7 +23,7 @@ To be added upon submission
   * [DS](./data/Shapefiles/DS) - shapefiles for distance sampling transects
   * [Transects](./data/Shapefiles/Transects) - shapefiles for transects where count data was collected
   * [reserve](./data/Shapefiles/reserve) - shapefile for reserve / management zone boundaries
-* [Herbivore Utilization Complete.csv](./data/Herbivore Utilization Complete.csv) - unformatted distance sampling data
+* [Herbivore Utilization Complete.csv](./data/Herbivore%20Utilization%20Complete.csv) - unformatted distance sampling data
 * [count_data_v01.RData](./data/count_data_v01.RData) - formatted count data
 * [distance_sampling_data_v01.RData](./data/distance_smapling_data_v01.RData) - formatted distance sampling data
 * [tblPreyCensus_2012to2014.csv](./data/tblPreyCensus_2012to2014.csv) - unformatted count data 
