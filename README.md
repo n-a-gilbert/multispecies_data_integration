@@ -20,7 +20,7 @@ To be added upon submission
    * [prepare_distance_sampling_data_v01.R](./code/data_processing/prepare_distance_sampling_data_v01.R) - format case study distance sampling data
    * [prepare_count_data_v01.R](./code/data_processing/prepare_count_data_v01.R) - format case study count data
 * [simulations](./code/simulations)
-   * [alternative_model_comparison](./code/simulations/alternative_model_comparison) - folder containing scripts with alternative single datastream / single-species models
+   * [alternative_model_comparison](./code/simulations/alternative_model_comparison) - folder containing scripts to run simulations for alternative single datastream / single-species models
       * [community_count_v01.R](./code/simulations/alternative_model_comparison/community_count_v01.R) - community count-only model
       * [community_distance_sampling_v01.R](./code/simulations/alternative_model_comparison/community_distance_sampling_v01.R) - community distance sampling-only model
       * [single_species_common_integrated_v01.R](./code/simulations/alternative_model_comparison/single_species_common_integrated_v01.R) - single species (common) integrated model
