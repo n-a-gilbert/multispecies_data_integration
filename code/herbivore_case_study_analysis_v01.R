@@ -97,7 +97,7 @@ model.code <- nimble::nimbleCode({
     NG[i] ~ dpois(lambda[i] * rho[i])
     yNG[i] ~ dbin(pie_sp[SP_NG[i]], NG[i])
     NG_missed[i] <- NG[i] - yNG[i]
-    log( kappa_ng[i] ) <- beta0[SP_NG[i]]
+    log( kappa_ng[i] ) <- beta0[SP_NG[i], REGION_NG[i]]
     GS_missed[i] ~ T( dpois( kappa_ng[i] ), 1, )
     N_missed[i] <- NG_missed[i] * GS_missed[i]
     N_ds[i] <- yN_DS[i] + N_missed[i]
