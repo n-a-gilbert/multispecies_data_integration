@@ -43,7 +43,7 @@ To be added upon submission
 
 ### [figures](./figures): contains figures, and code to create them
 * [main_simulation_icm_relative_bias_v01.png](./figures/main_simulation_icm_relative_bias_v01.png) - Figure 3 - relative bias of abundance estimates from main simulation
-* [simulation_model_comparison_covariate_v01.png](./figures/simulation_model_comparison_covariate_v01.png) - Figure 4 - accuracy and precision of covariate estimates from ICM and alternative models
+* [simulation_model_comparison_covariate_v01.png](./figures/simulation_model_comparison_covariate_v01.png) - Figure 4 - accuracy/precision of covariate estimates from ICM & alternative models
 * [study_area_map_v02.png](./figures/study_area_map_v02.png) - map of study area
 * [code_for_figures](./figures/code_for_figures) - folder with scripts to create figures
    * [figure_02_study_area_map_v01.R](./figures/code_for_figures/figure_02_study_area_map_v01.R) - make study area map
