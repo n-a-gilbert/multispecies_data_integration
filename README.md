@@ -21,4 +21,6 @@ To be added upon submission
 ### [data](./data): Contains data for case study
 * [Shapefiles](./data/Shapefiles) - various shapefiles
   * [DS](./data/Shapefiles/DS) - shapefiles for distance sampling transects
+  * [Transects](./data/Shapefiles/Transects) - shapefiles for transects where count data was collected
+  * [reserve](./data/Shapefiles/reserve) - shapefile for reserve / management zone boundaries
 * b 
