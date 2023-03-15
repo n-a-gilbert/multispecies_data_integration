@@ -17,3 +17,8 @@ To be added upon submission
 *  [prepare_distance_sampling_data_v01.R](./code/prepare_distance_sampling_data_v01.R) - format case study distance sampling data
 *  [prepare_count_data_v01.R](./code/prepare_count_data_v01.R) - format case study count data
 *  [herbivore_case_study_analaysis_v01.R](./code/herbivore_case_study_analysis_v01.R) - code to run case study model
+
+### [data](./data): Contains data for case study
+* [Shapefiles](./data/Shapefiles) - various shapefiles
+  * [DS](./data/Shapefiles/DS) - shapefiles for distance sampling transects
+* b 
