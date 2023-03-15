@@ -21,7 +21,7 @@ To be added upon submission
    * [prepare_count_data_v01.R](./code/data_processing/prepare_count_data_v01.R) - format case study count data
 * [simulations](./code/simulations)
    * [alternative_model_comparison](./code/simulations/alternative_model_comparison) - folder containing scripts with alternative single datastream / single-species models
-      * test 
+      * [community_count_v01.R](./code/simulations/alternative_model_comparison/community_count_v01.R) - community count-only model
    * [main_simulation_v01.R](./code/simulations/main_simulation_v01.R) - script to run the main simulation
 
 ### [data](./data): Contains data for case study
