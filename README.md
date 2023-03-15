@@ -42,6 +42,7 @@ To be added upon submission
 * [tblPreyCensus_2012to2014.csv](./data/tblPreyCensus_2012to2014.csv) - unformatted count data 
 
 ### [figures](./figures): contains figures, and code to create them
+* [main_simulation_icm_relative_bias_v01.png](./figures/main_simulation_icm_relative_bias_v01.png) - Figure 3 - relative bias of abundance estimates from main simulation
 * [study_area_map_v02.png](./figures/study_area_map_v02.png) - map of study area
 * [code_for_figures](./figures/code_for_figures) - folder with scripts to create figures
    * [figure_02_study_area_map_v01.R](./figures/code_for_figures/figure_02_study_area_map_v01.R) - make study area map
