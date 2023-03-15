@@ -40,3 +40,7 @@ To be added upon submission
 * [count_data_v01.RData](./data/count_data_v01.RData) - formatted count data
 * [distance_sampling_data_v01.RData](./data/distance_smapling_data_v01.RData) - formatted distance sampling data
 * [tblPreyCensus_2012to2014.csv](./data/tblPreyCensus_2012to2014.csv) - unformatted count data 
+
+### [figures](./figures): contains figures, and code to create them
+* [study_area_map_v02.png](./figures/study_area_map_v02.png) - map of study area
+* [code_for_figures](./figures/code_for_figures) - folder with scripts to create figures
