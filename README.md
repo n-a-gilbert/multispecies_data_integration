@@ -44,3 +44,5 @@ To be added upon submission
 ### [figures](./figures): contains figures, and code to create them
 * [study_area_map_v02.png](./figures/study_area_map_v02.png) - map of study area
 * [code_for_figures](./figures/code_for_figures) - folder with scripts to create figures
+   * [figure_02_study_area_map_v01.R](./figures/code_for_figures/figure_02_study_area_map_v01.R) - make study area map
+   * [figure_s1_s2_simulated_communit_v01.R](./figures/code_for_figures/figure_s1_s2_simulated_communit_v01.R) - plot simulated community example 
