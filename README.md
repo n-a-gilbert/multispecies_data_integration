@@ -17,10 +17,10 @@ To be added upon submission
 *  [case_study_analysis](./code/case_study_analysis)
    * [herbivore_case_study_analaysis_v01.R](./code/case_study_analysis/herbivore_case_study_analysis_v01.R) - code to run case study model
 *  [data_processing](./code/data_processing)
-   *[prepare_distance_sampling_data_v01.R](./code/data_processing/prepare_distance_sampling_data_v01.R) - format case study distance sampling data
-   *[prepare_count_data_v01.R](./code/data_processing/prepare_count_data_v01.R) - format case study count data
+   * [prepare_distance_sampling_data_v01.R](./code/data_processing/prepare_distance_sampling_data_v01.R) - format case study distance sampling data
+   * [prepare_count_data_v01.R](./code/data_processing/prepare_count_data_v01.R) - format case study count data
 * [simulations](./code/simulations)  
-   *[main_simulation_v01.R](./code/simulations/main_simulation_v01.R) - script to run the main simulation
+   * [main_simulation_v01.R](./code/simulations/main_simulation_v01.R) - script to run the main simulation
 
 ### [data](./data): Contains data for case study
 * [Shapefiles](./data/Shapefiles) - various shapefiles
