@@ -19,7 +19,8 @@ To be added upon submission
 *  [data_processing](./code/data_processing)
    * [prepare_distance_sampling_data_v01.R](./code/data_processing/prepare_distance_sampling_data_v01.R) - format case study distance sampling data
    * [prepare_count_data_v01.R](./code/data_processing/prepare_count_data_v01.R) - format case study count data
-* [simulations](./code/simulations)  
+* [simulations](./code/simulations)
+   * [alternative_model_comparison](./code/simulations/alternative_model_comparison) - folder containing scripts with alternative single datastream / single-species models
    * [main_simulation_v01.R](./code/simulations/main_simulation_v01.R) - script to run the main simulation
 
 ### [data](./data): Contains data for case study
