@@ -42,6 +42,8 @@ To be added upon submission
 * [tblPreyCensus_2012to2014.csv](./data/tblPreyCensus_2012to2014.csv) - unformatted count data 
 
 ### [figures](./figures): contains figures, and code to create them
+* [density_estimates_mean_v01.png](./figures/density_estimates_mean_v01.png) - Fig. S3 - posterior means of abundance estimates
+* [density_estimates_sd_v01.png](./figures/density_estimates_sd_v01.png) - Fig. S4 - posterior standard deviation of abundance estimates
 * [figure_01.png](./figures/figure_01.png) - Figure 1 - conceptual overview of model
 * [main_simulation_icm_relative_bias_v01.png](./figures/main_simulation_icm_relative_bias_v01.png) - Figure 3 - relative bias of abundance estimates from main simulation
 * [simulation_model_comparison_covariate_v01.png](./figures/simulation_model_comparison_covariate_v01.png) - Figure 4 - accuracy/precision of covariate estimates from ICM & alternative models
@@ -50,6 +52,7 @@ To be added upon submission
    * [figure_02_study_area_map_v01.R](./figures/code_for_figures/figure_02_study_area_map_v01.R) - make study area map
    * [figure_s1_s2_simulated_communit_v01.R](./figures/code_for_figures/figure_s1_s2_simulated_communit_v01.R) - plot simulated community example 
    * [figures_3_4_tables_s2_s3_v01.R](./figures/code_for_figures/figures_3_4_tables_s2_s3_v01.R) - create figures 3 & 4, plus tables s2 and s3
+   * [figures_s3_s4_plot_abundance_estimates_v01.R](./figures/code_for_figures/figures_s3_s4_plot_abundance_estimates_v01.R) - creates Figs. S3, S4
    
 ### [results](./results): contains results files
 * [herbivore_case_study_results_v01.RData](./results/herbivore_case_study_results_v01.RData) - Model output for Mara herbivores case study
