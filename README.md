@@ -60,3 +60,4 @@ To be added upon submission
 * [herbivore_case_study_results_v01.RData](./results/herbivore_case_study_results_v01.RData) - Model output for Mara herbivores case study
 * [main_simulation_results_v01.RData](./results/main_simulation_results_v01.RData) - Summarized results from main simulation
 * [simulation_alternative_model_results_v01.RData](./results/simulation_alternative_model_results_v01.RData) - Summarised results for alternative model simulations
+
