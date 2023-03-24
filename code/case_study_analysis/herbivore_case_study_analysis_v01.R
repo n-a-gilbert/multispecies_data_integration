@@ -67,14 +67,20 @@ model.code <- nimble::nimbleCode({
   mu_gamma0 ~ dnorm(5.5, sd = 0.5)
   sd_gamma0 ~ dexp(1)
   gamma1 ~ dnorm(0, sd = 2)
-  mu_alpha0 ~ dnorm(0, sd = 2)
-  sd_alpha0 ~ dexp(1)
-  mu_beta0 ~ dnorm(0, sd = 2)
-  sd_beta0 ~ dexp(1)
+  for( j in 1:NREGION) {
+    mu_alpha0[j] ~ dnorm(0, sd = 2)
+    sd_alpha0[j] ~ dexp(1)
+    mu_beta0[j]  ~ dnorm(0, sd = 2)
+    sd_beta0[j]  ~ dexp(1)
+  }
+  mu_alpha0_contrast <- mu_alpha0[2] - mu_alpha0[1]
+  sd_alpha0_contrast <- sd_alpha0[2] - sd_alpha0[1]
+  mu_beta0_contrast <- mu_beta0[2] - mu_beta0[1]
+  sd_beta0_contrast <- sd_beta0[2] - sd_beta0[1]
   for (s in 1:NSPECIES) {
     for (j in 1:NREGION) {
-      alpha0[s, j] ~ dnorm(mu_alpha0, sd = sd_alpha0)
-      beta0[s, j] ~ dnorm(mu_beta0, sd = sd_beta0)
+      alpha0[s, j] ~ dnorm(mu_alpha0[j], sd = sd_alpha0[j])
+      beta0[s, j] ~ dnorm(mu_beta0[j], sd = sd_beta0[j])
     }
     alpha0_contrast[s] <- alpha0[s, 2] - alpha0[s, 1]
     beta0_contrast[s] <- beta0[s, 2] - beta0[s, 1]
@@ -118,8 +124,10 @@ model.code <- nimble::nimbleCode({
   }
 })
 
-params <- c("mu_gamma0", "sd_gamma0", "mu_alpha0", "sd_alpha0", "mu_beta0", 
-            "sd_beta0", "zeta", "xi", "gamma0", "gamma1", "alpha0", "alpha0_contrast", 
+params <- c("mu_gamma0", "sd_gamma0",
+            "mu_alpha0", "sd_alpha0", "mu_alpha0_contrast", "sd_alpha0_contrast",
+            "mu_beta0", "sd_beta0", "mu_beta0_contrast", "sd_beta0_contrast",
+            "zeta", "xi", "gamma0", "gamma1", "alpha0", "alpha0_contrast", 
             "beta0_contrast", "beta0", "pie_sp", "pie_sp_tc", "N_ds", "N")
 
 inits <- function(){
@@ -129,10 +137,10 @@ inits <- function(){
     mu_gamma0 = 5.5, 
     sd_gamma0 = 0.5, 
     gamma1 = rnorm(1, 0, 1),
-    mu_alpha0 = rnorm(1, 0, 2), 
-    sd_alpha0 = rexp(1, 1), 
-    mu_beta0 = rnorm(1, 0, 2), 
-    sd_beta0 = rexp(1, 1), 
+    mu_alpha0 = rnorm(constants$NREGION, 0, 2), 
+    sd_alpha0 = rexp(constants$NREGION, 1), 
+    mu_beta0 = rnorm(constants$NREGION, 0, 2), 
+    sd_beta0 = rexp(constants$NREGION, 1), 
     gamma0 = rep(5.5, constants$NSPECIES),
     alpha0 = array(rnorm(constants$NSPECIES * constants$NREGION, 0, 2),
                    dim = c(constants$NSPECIES, constants$NREGION)),
@@ -202,5 +210,5 @@ save(
   model.code, 
   data, 
   constants,
-  file = "herbivore_case_study_results_v01.RData"
+  file = "herbivore_case_study_results_v02.RData"
 )
