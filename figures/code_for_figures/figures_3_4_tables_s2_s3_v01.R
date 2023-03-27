@@ -18,13 +18,10 @@ prop_labs <- icm_n_ds_rb %>%
                          levels = c(
                            "Count detectability 20% lower",
                            "Same detectability"))) %>% 
-  mutate(nsites_tc_fact = ifelse(nsites_tc_fact == 1, 
-                                 "Same amount of both data", 
-                                 "4x more count data")) %>% 
-  mutate(nsites_tc_fact = factor(nsites_tc_fact, 
-                                 levels = c(
-                                   "4x more count data",
-                                   "Same amount of both data"))) %>% 
+  mutate(nsites_tc_fact = ifelse(nsites_tc_fact == 1, "Same amount\nof both data", "4x more\ncount data")) %>% 
+  mutate(nsites_tc_fact = factor(nsites_tc_fact, levels = c(
+    "4x more\ncount data",
+    "Same amount\nof both data"))) %>% 
   mutate( contain0 = ifelse(contain0 == 0, "False", "True")) %>% 
   ungroup() %>% 
   group_by( source, nsites_tc_fact, p_bias ) %>% 
@@ -44,22 +41,24 @@ icm_n_ds_rb %>%
   mutate(p_bias = factor(p_bias, levels = c(
     "Count detectability 20% lower",
     "Same detectability"))) %>% 
-  mutate(nsites_tc_fact = ifelse(nsites_tc_fact == 1, "Same amount of both data", "4x more count data")) %>% 
+  mutate(nsites_tc_fact = ifelse(nsites_tc_fact == 1, "Same amount\nof both data", "4x more\ncount data")) %>% 
   mutate(nsites_tc_fact = factor(nsites_tc_fact, levels = c(
-    "4x more count data",
-    "Same amount of both data"))) %>% 
+    "4x more\ncount data",
+    "Same amount\nof both data"))) %>% 
   mutate( contain0 = ifelse(contain0 == 0, "False", "True")) %>% 
   ggplot( aes( x = mean, y = nsites_tc_fact, fill = p_bias )) +
   facet_wrap(~source, scales = "free_x") +
   geom_vline(xintercept = 0,
              color = MetPalettes$Hiroshige[[1]][c(1)],
              linetype = "dashed") +
-  geom_boxplot(outlier.alpha = 0.2, outlier.size = 0.2, size = 0.8) +
+  geom_boxplot(outlier.alpha = 0.2,
+               outlier.size = 0.2, 
+               size = 0.5) +
   geom_label(data = prop_labs,
              aes(label = prop,
                  color = p_bias),
              position = position_dodge(width = 0.75),
-             size = 2.75,
+             size = 3,
              fill = "white",
              show.legend = FALSE,
              label.size = NA) +
@@ -71,10 +70,10 @@ icm_n_ds_rb %>%
   theme(legend.position = "bottom",
         legend.title = element_blank(), 
         axis.title.y =element_blank(),
-        axis.text = element_text(size = 7, color = "black"), 
-        axis.title = element_text(size = 8, color = "black"), 
-        strip.text = element_text(size = 7, color = "black"),
-        legend.text = element_text(size = 7, color = "black"),
+        axis.text = element_text(size = 10, color = "black"), 
+        axis.title = element_text(size = 11, color = "black"), 
+        strip.text = element_text(size = 11, color = "black"),
+        legend.text = element_text(size = 10, color = "black"),
         panel.background = element_rect(fill = "white", color = NA), 
         plot.background = element_rect(fill = "white", color = NA),
         legend.margin = margin(0, 0, 0, 0), 

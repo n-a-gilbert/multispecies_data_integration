@@ -58,7 +58,7 @@ tr_label <- tibble(
          y = st_coordinates(.)[,2])
 
 tt_label <- tibble(
-  x = c(35.291453),
+  x = c(35.27),
   y = c(-1.425038), 
   name = c("Talek town")
 ) %>% 
@@ -73,13 +73,18 @@ res_plot <-
   geom_sf(data = res, 
           aes( geometry = geometry, fill = region),
           color = NA ) +
+ 
+  geom_sf( data = filter(surveys, data != "Distance sampling"), 
+           aes( geometry = geometry, 
+                color = data),
+           lwd = 3) +  
+  geom_sf( data = filter(surveys, data == "Distance sampling"), 
+           aes( geometry = geometry, 
+                color = data),
+           lwd = 1) +
   geom_sf(data = talek, 
           aes(geometry = geometry), 
           size = 4) +
-  geom_sf( data = surveys, 
-           aes( geometry = geometry, 
-                color = data,
-                lwd = data) ) +
   geom_text(data = mt_label, 
             aes(x = x, 
                 y = y, 
@@ -97,7 +102,7 @@ res_plot <-
                 label = name), 
             color = "black",
             size = 3.1) +
-  scale_size_manual(values = c(1.5, 0.5)) +
+  # scale_size_manual(values = c(10, 5)) +
   scale_color_manual(values = linepal) + 
   theme_minimal() +
   scale_fill_manual(
@@ -109,7 +114,11 @@ res_plot <-
                              size = 9),
     legend.key = element_rect(color = NA, fill = NA),
     legend.key.size = unit(0.5, "cm"),
-    axis.title = element_blank() )
+    axis.title = element_blank(),
+    plot.background = element_rect(color = NA, 
+                                   fill = "white"),
+    panel.background = element_rect(color = NA, 
+                                    fill = "white"))
 
 data("wrld_simpl")
 
@@ -149,20 +158,35 @@ inset <-
   theme(plot.background = element_rect(fill = "white",
                                        color = "gray20"))
 
-for_legend <- ggplot( data = 
-                        tibble( x = c(1, 2), 
-                                xend = c(2, 3), 
-                                y = c(1, 2), 
-                                yend = c( 2, 3),
-                                data = c("Counts", "Distance sampling")
-                        )) + 
-  geom_segment(aes(x = x, 
+leg_data <- tibble( x = c(1, 2), 
+                    xend = c(2, 3), 
+                    y = c(1, 2), 
+                    yend = c( 2, 3),
+                    data = factor(c("Counts", "Distance sampling"),
+                                  levels = c("Distance sampling", "Counts")))
+
+
+for_legend <-
+ggplot() +
+  geom_segment(data = filter(leg_data, 
+                             data == "Counts"), 
+               aes(x = x, 
                    xend = xend, 
                    y = y, 
-                   yend = yend,
+                   yend = yend, 
                    color = data, 
-                   lwd = data)) +
-  scale_size_manual(values = c(2, 1)) +
+                   lwd = data),
+               lwd = 3) +
+    
+    geom_segment(data = filter(leg_data, 
+                               data == "Distance sampling"), 
+                 aes(x = x, 
+                     xend = xend, 
+                     y = y, 
+                     yend = yend, 
+                     color = data,
+                     lwd = data),
+                 lwd = 1) +
   scale_color_manual(values = linepal) +
   theme_minimal() +
   theme(legend.title = element_blank(),
@@ -173,7 +197,7 @@ leg <- cowplot::get_legend(for_legend)
 ggdraw() + 
   draw_plot(res_plot) + 
   draw_plot(inset,
-            x = 0.7,
+            x = 0.65,
             y = 0.67,
             width = 0.3,
             height = 0.32) + 
@@ -184,7 +208,7 @@ ggdraw() +
 setwd(here::here("figures"))
 ggsave(
   "study_area_map_v02.png",
-  width = 4.5, 
-  height = 3, 
+  width = 7.5, 
+  height = 5, 
   units = "in", 
   dpi = 300)

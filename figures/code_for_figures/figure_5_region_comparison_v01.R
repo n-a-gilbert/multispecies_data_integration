@@ -129,6 +129,59 @@ variation_plot <-
          panel.background = element_rect(color = NA, fill = "white")) +
   ylim( c(-0.5, 1))
 
+
+variation_plot <- MCMCvis::MCMCpstr( out, params = c("sd_alpha0_contrast"), type = "chains" )[[1]] %>% 
+  tibble::as_tibble() %>% 
+  tidyr::pivot_longer(1:3000, names_to = "iter", values_to = "value") %>% 
+  tibble::add_column( type = "Interspecific variation: number of groups" ) %>% 
+  dplyr::full_join(
+    MCMCvis::MCMCpstr( out, params = c("sd_beta0_contrast"), type = "chains" )[[1]] %>% 
+      tibble::as_tibble() %>% 
+      tidyr::pivot_longer( 1:3000, names_to = "iter", values_to = "value" ) %>% 
+      tibble::add_column( type = "Interspecific variation: group size" )
+  ) %>%
+  dplyr::mutate(type = factor(type, levels = c("Interspecific variation: number of groups",
+                                               "Interspecific variation: group size" ))) %>% 
+  
+  group_by(type) %>% 
+  summarise( mean = mean(value), 
+             l95 = quantile(value, c(0.025)), 
+             u95 = quantile(value, c(0.975))) %>% 
+  
+  ggplot( aes( x = mean ) ) +
+  facet_wrap(~type) +
+  geom_rect( aes( xmin = l95, 
+                  xmax = u95), 
+             ymin = -Inf, 
+             ymax = Inf,
+             fill = MetBrewer::MetPalettes$Hiroshige[[1]][7],
+             color = NA, 
+             alpha = 0.3 ) +
+  geom_vline( xintercept = 0,
+              color = MetBrewer::MetPalettes$Hiroshige[[1]][1],
+              linetype = "dashed" ) +
+  geom_vline( aes( xintercept = mean ), 
+              color =  MetBrewer::MetPalettes$Hiroshige[[1]][7],
+              size = 2,
+              alpha = 0.3 ) +
+  theme_minimal() +
+  scale_x_continuous( limits = c(-3.01, 3.53), 
+                      breaks = c( -3, -1.5, 0, 1.5, 3)) +
+  labs( x = "Contrast ( Talek - Mara )",
+        title = "(b)" ) + 
+  theme( panel.grid = element_blank(),
+         axis.title.y = element_blank(),
+         axis.line.y = element_blank(),
+         axis.text.y = element_blank(), 
+         plot.title = element_text(color = "black", size = 9),
+         axis.text.x = element_text(color = "black", size = 8),
+         axis.title.x = element_text(color = "black", size = 9),
+         strip.text = element_text(color = "black", size = 9),
+         axis.line = element_line(color = "black", size = 0.1),
+         plot.background = element_rect(color = NA, fill = "white"), 
+         panel.background = element_rect(color = NA, fill = "white")) +
+  ylim( c(-0.5, 1))
+
 # combine with patchwork 
 average_plot + variation_plot + plot_layout( nrow = 2, heights = c(10, 1))
 
