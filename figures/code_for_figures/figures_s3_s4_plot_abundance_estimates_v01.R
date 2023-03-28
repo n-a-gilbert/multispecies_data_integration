@@ -140,11 +140,10 @@ panela_sd <- ggplot( N_DS,
         aes( y = site, x = rep, fill = log1p(density_sd))) +
   facet_wrap( ~sp_name ) +
   geom_tile() + 
-  scale_fill_gradientn(colors = met.brewer(name="Greek", n=100,
+  scale_fill_gradientn(colors = met.brewer(name="Hiroshige", n=100,
                                            type="continuous",
-                                           direction = -1),
-                       limits = c(0, 4.56)
-                       ) +
+                                           direction = 1),
+                       limits = c(0, 4.56)) +
   geom_hline(yintercept = 13.5, color = "black", size = 0.7) + 
   theme_minimal() +
   scale_y_continuous(breaks = c(1, 6, 12, 18))+
@@ -174,11 +173,10 @@ panelb_sd <- ggplot( N_C,
         aes( y = site, x = rep, fill = log1p(density_sd))) +
   facet_wrap( ~sp_name ) +
   geom_tile() + 
-  scale_fill_gradientn(colors = met.brewer(name="Greek", n=100,
+  scale_fill_gradientn(colors = met.brewer(name="Hiroshige", n=100,
                                            type="continuous",
-                                           direction = -1),
-                       limits = c(0, 4.56)
-  ) +
+                                           direction = 1),
+                       limits = c(0, 4.56)) +
   geom_hline(yintercept = 6.5, color = "black", size = 0.7) + 
   theme_minimal() +
   scale_y_continuous(breaks = c(1, 4, 8))+
