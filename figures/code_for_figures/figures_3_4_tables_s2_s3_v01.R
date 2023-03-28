@@ -18,10 +18,10 @@ prop_labs <- icm_n_ds_rb %>%
                          levels = c(
                            "Count detectability 20% lower",
                            "Same detectability"))) %>% 
-  mutate(nsites_tc_fact = ifelse(nsites_tc_fact == 1, "Same amount\nof both data", "4x more\ncount data")) %>% 
+  mutate(nsites_tc_fact = ifelse(nsites_tc_fact == 1, "Same \namount of\nboth data", "4x more \ncount data")) %>% 
   mutate(nsites_tc_fact = factor(nsites_tc_fact, levels = c(
-    "4x more\ncount data",
-    "Same amount\nof both data"))) %>% 
+    "4x more \ncount data",
+    "Same \namount of\nboth data"))) %>% 
   mutate( contain0 = ifelse(contain0 == 0, "False", "True")) %>% 
   ungroup() %>% 
   group_by( source, nsites_tc_fact, p_bias ) %>% 
@@ -29,68 +29,119 @@ prop_labs <- icm_n_ds_rb %>%
   summarise( prop = round (sum( contain0 == "False", na.rm = TRUE) / n, 2 )) %>% 
   mutate(prop = paste0( (100 - (prop * 100)), "% unbiased")) %>% 
   distinct(.) %>% 
-  tibble::add_column( mean = c( 1.3, 1.3, 
-                                1.3, 1.3, 
+  tibble::add_column( mean = c( 1.35, 1.35, 
+                                1.35, 1.35, 
                                 1.4, 1.4, 
                                 1.4, 1.4))
-  
-icm_n_ds_rb %>% 
-  add_column( source = "Distance sampling") %>% 
-  full_join(icm_info) %>% 
-  full_join( add_column( full_join(icm_n_tc_rb, icm_info), source = "Counts" ) ) %>% 
-  mutate(tot = ifelse(source == "Counts", totTC, totDS)) %>%
-  dplyr::select( simrep, sp, mean, sd, l95, u95, contain0, tot, nsites_tc_fact, p_bias, source) %>% 
-  mutate(p_bias = ifelse(p_bias == 0, "Same detectability", "Count detectability 20% lower")) %>% 
-  mutate(p_bias = factor(p_bias, levels = c(
-    "Count detectability 20% lower",
-    "Same detectability"))) %>% 
-  mutate(nsites_tc_fact = ifelse(nsites_tc_fact == 1, "Same amount\nof both data", "4x more\ncount data")) %>% 
-  mutate(nsites_tc_fact = factor(nsites_tc_fact, levels = c(
-    "4x more\ncount data",
-    "Same amount\nof both data"))) %>% 
-  mutate( contain0 = ifelse(contain0 == 0, "False", "True")) %>% 
-  ggplot( aes( x = mean, y = nsites_tc_fact, fill = p_bias )) +
-  facet_wrap(~source, scales = "free_x") +
-  geom_vline(xintercept = 0,
-             # color = MetPalettes$Hiroshige[[1]][c(9)],
-             color = "gray60",
-             linetype = "dashed") +
-  geom_boxplot(outlier.alpha = 0.2,
-               outlier.size = 0.75, 
-               size = 0.25) +
-  geom_label(data = prop_labs,
-             aes(label = prop,
-                 color = p_bias),
-             position = position_dodge(width = 1.35),
-             size = 3,
-             fill = "white",
-             show.legend = FALSE,
-             label.size = NA) +
-  scale_fill_manual(values = MetPalettes$Hiroshige[[1]][c(1,3)])+
-  scale_color_manual(values = MetPalettes$Hiroshige[[1]][c(1,3)])+
-  theme_classic() +
-  xlim(c(-1, 3.55)) +
-  labs(x = "Relative bias (%)") +
-  theme(legend.position = "bottom",
-        legend.title = element_blank(), 
-        axis.title.y =element_blank(),
-        axis.text = element_text(size = 10, color = "black"), 
-        axis.title = element_text(size = 11, color = "black"), 
-        strip.text = element_text(size = 11, color = "black"),
-        legend.text = element_text(size = 10, color = "black"),
-        panel.background = element_rect(fill = "white", color = NA), 
-        plot.background = element_rect(fill = "white", color = NA),
-        legend.margin = margin(0, 0, 0, 0), 
-        legend.box.margin = margin(-5, 0, 0, 0),
-        strip.background = element_rect(color = NA),
-        axis.line = element_line(size = 0.1, color = "black"),
-        axis.ticks = element_line(size = 0.1, color = "black"))
+
+( panela <- icm_n_ds_rb %>% 
+    add_column( source = "Distance sampling") %>% 
+    full_join(icm_info) %>% 
+    full_join( add_column( full_join(icm_n_tc_rb, icm_info), source = "Counts" ) ) %>% 
+    mutate(tot = ifelse(source == "Counts", totTC, totDS)) %>%
+    dplyr::select( simrep, sp, mean, sd, l95, u95, contain0, tot, nsites_tc_fact, p_bias, source) %>% 
+    mutate(p_bias = ifelse(p_bias == 0, "Same detectability", "Count detectability 20% lower")) %>% 
+    mutate(p_bias = factor(p_bias, levels = c(
+      "Count detectability 20% lower",
+      "Same detectability"))) %>% 
+    mutate(nsites_tc_fact = ifelse(nsites_tc_fact == 1, "Same \namount of\nboth data", "4x more \ncount data")) %>% 
+    mutate(nsites_tc_fact = factor(nsites_tc_fact, levels = c(
+      "4x more \ncount data",
+      "Same \namount of\nboth data"))) %>% 
+    mutate( contain0 = ifelse(contain0 == 0, "False", "True")) %>% 
+    ggplot( aes( x = mean, y = nsites_tc_fact, fill = p_bias )) +
+    facet_wrap(~source, scales = "free_x") +
+    geom_vline(xintercept = 0,
+               # color = MetPalettes$Hiroshige[[1]][c(9)],
+               color = "gray60",
+               linetype = "dashed") +
+    geom_boxplot(outlier.alpha = 0.2,
+                 outlier.size = 0.75, 
+                 size = 0.25) +
+    geom_label(data = prop_labs,
+               aes(label = prop,
+                   color = p_bias),
+               position = position_dodge(width = 1.35),
+               size = 3,
+               fill = "white",
+               show.legend = FALSE,
+               label.size = NA) +
+    scale_fill_manual(values = MetPalettes$Hiroshige[[1]][c(1,3)])+
+    scale_color_manual(values = MetPalettes$Hiroshige[[1]][c(1,3)])+
+    theme_classic() +
+    xlim(c(-1, 3.55)) +
+    labs(x = "Relative bias (%)",
+         title = "(a)") +
+    theme(legend.position = "bottom",
+          legend.title = element_blank(), 
+          axis.title.y =element_blank(),
+          axis.text = element_text(size = 10, color = "black"), 
+          axis.title = element_text(size = 10, color = "black"), 
+          strip.text = element_text(size = 11, color = "black"),
+          legend.text = element_text(size = 10, color = "black"),
+          plot.title = element_text(size = 10, color = "black"),
+          panel.background = element_rect(fill = "white", color = NA), 
+          plot.background = element_rect(fill = "white", color = NA),
+          legend.margin = margin(0, 0, 0, 0), 
+          legend.box.margin = margin(-5, 0, 0, 0),
+          strip.background = element_rect(color = NA),
+          axis.line = element_line(size = 0.1, color = "black"),
+          axis.ticks = element_line(size = 0.1, color = "black")) +
+    guides( fill = guide_legend(nrow = 2)))
+
+( panelb <- icm_a1 %>% 
+    mutate(p_bias = ifelse(p_bias == 0, 
+                           "Same    \ndetectability", 
+                           "Count  \ndetectability\n20% lower")) %>% 
+    mutate(p_bias = factor(p_bias, 
+                           levels = c(
+                             "Count  \ndetectability\n20% lower",
+                             "Same    \ndetectability"))) %>% 
+    mutate(nsites_tc_fact = ifelse(nsites_tc_fact == 1, "Same amount of both data", "4x more count data")) %>% 
+    mutate(nsites_tc_fact = factor(nsites_tc_fact, levels = c(
+      "4x more count data",
+      "Same amount of both data"))) %>% 
+    tibble::add_column( type = "Covariate effect") %>% 
+    
+    ggplot( aes( x = mean, y = p_bias, fill = nsites_tc_fact)) +
+    facet_wrap(~type) +
+    geom_vline(xintercept = 0,
+               color = "gray60",
+               linetype = "dashed") +
+    geom_boxplot(outlier.alpha = 0.2,
+                 outlier.size = 0.75, 
+                 size = 0.25) +
+    labs( x = "Truth - estimate") +
+    scale_fill_manual(values = MetPalettes$Hiroshige[[1]][c(4,6)])+
+    ggtitle("(b)") +
+    theme_classic() +
+    theme(legend.position = "bottom",
+          legend.title = element_blank(), 
+          axis.title.y =element_blank(),
+          axis.text = element_text(size = 10, color = "black"), 
+          axis.title.x = element_text(size = 10, color = "black"), 
+          strip.text = element_text(size = 11, color = "black"),
+          legend.text = element_text(size = 10, color = "black"),
+          panel.background = element_rect(fill = "white", color = NA), 
+          plot.background = element_rect(fill = "white", color = NA),
+          legend.margin = margin(0, 18, 0, 0), 
+          plot.title = element_text(size = 10, color = "black"),
+          legend.box.margin = margin(-5, 18, 0, 0),
+          strip.background = element_rect(color = NA),
+          axis.line = element_line(size = 0.1, color = "black"),
+          axis.ticks = element_line(size = 0.1, color = "black")) +
+    guides(fill = guide_legend(nrow = 2)))
+
+
+library(patchwork)
+
+panela + panelb + plot_layout( nrow = 1, widths = c(2.8, 1))
 
 setwd(here::here("figures"))
 ggsave(
-  "main_simulation_icm_relative_bias_v01.png",
-  width = 5, 
-  height = 3, 
+  "main_simulation_icm_v01.png",
+  width = 7, 
+  height = 4, 
   units = "in", 
   dpi = 300
 )
