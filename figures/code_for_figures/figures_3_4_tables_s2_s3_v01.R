@@ -29,8 +29,11 @@ prop_labs <- icm_n_ds_rb %>%
   summarise( prop = round (sum( contain0 == "False", na.rm = TRUE) / n, 2 )) %>% 
   mutate(prop = paste0( (100 - (prop * 100)), "% unbiased")) %>% 
   distinct(.) %>% 
-  add_column(mean = 3)
-
+  tibble::add_column( mean = c( 1.3, 1.3, 
+                                1.3, 1.3, 
+                                1.4, 1.4, 
+                                1.4, 1.4))
+  
 icm_n_ds_rb %>% 
   add_column( source = "Distance sampling") %>% 
   full_join(icm_info) %>% 
@@ -49,21 +52,22 @@ icm_n_ds_rb %>%
   ggplot( aes( x = mean, y = nsites_tc_fact, fill = p_bias )) +
   facet_wrap(~source, scales = "free_x") +
   geom_vline(xintercept = 0,
-             color = MetPalettes$Hiroshige[[1]][c(1)],
+             # color = MetPalettes$Hiroshige[[1]][c(9)],
+             color = "gray60",
              linetype = "dashed") +
   geom_boxplot(outlier.alpha = 0.2,
-               outlier.size = 0.2, 
-               size = 0.5) +
+               outlier.size = 0.75, 
+               size = 0.25) +
   geom_label(data = prop_labs,
              aes(label = prop,
                  color = p_bias),
-             position = position_dodge(width = 0.75),
+             position = position_dodge(width = 1.35),
              size = 3,
              fill = "white",
              show.legend = FALSE,
              label.size = NA) +
-  scale_fill_manual(values = MetPalettes$Hiroshige[[1]][c(3,7)])+
-  scale_color_manual(values = MetPalettes$Hiroshige[[1]][c(3,7)])+
+  scale_fill_manual(values = MetPalettes$Hiroshige[[1]][c(1,3)])+
+  scale_color_manual(values = MetPalettes$Hiroshige[[1]][c(1,3)])+
   theme_classic() +
   xlim(c(-1, 3.55)) +
   labs(x = "Relative bias (%)") +
@@ -78,13 +82,15 @@ icm_n_ds_rb %>%
         plot.background = element_rect(fill = "white", color = NA),
         legend.margin = margin(0, 0, 0, 0), 
         legend.box.margin = margin(-5, 0, 0, 0),
-        strip.background = element_rect(color = NA))
+        strip.background = element_rect(color = NA),
+        axis.line = element_line(size = 0.1, color = "black"),
+        axis.ticks = element_line(size = 0.1, color = "black"))
 
 setwd(here::here("figures"))
 ggsave(
   "main_simulation_icm_relative_bias_v01.png",
-  width = 6, 
-  height = 3.5, 
+  width = 5, 
+  height = 3, 
   units = "in", 
   dpi = 300
 )
@@ -98,7 +104,7 @@ icm_a1 %>%
                          levels = c(
                            "Same detectability",
                            "Count detectability 20% lower"
-                           ))) %>% 
+                         ))) %>% 
   mutate(nsites_tc_fact = ifelse(nsites_tc_fact == 1, 
                                  "Same amount of both data", 
                                  "4x more count data")) %>% 
@@ -106,7 +112,7 @@ icm_a1 %>%
                                  levels = c(
                                    "Same amount of both data",
                                    "4x more count data"
-                                   ))) %>% 
+                                 ))) %>% 
   group_by( nsites_tc_fact, p_bias ) %>%
   mutate(n = n()) %>% 
   summarise( unbiased = round( 100 * ( sum(contain0) / n), 1),
@@ -148,35 +154,7 @@ key <- tribble(
   "CDS", "Community, distance sampling",
   "ISS", "Single species, integrated", 
   "SSC", "Single species, counts", 
-  "SSDS", "Single species, distance sampling"
-)
-
-labs <- alpha1_truth_minus_estimate %>% 
-  full_join(icm_for_comparison) %>% 
-  full_join(key) %>% 
-  mutate(species = ifelse(species == "common", "Common species", "Rare species")) %>% 
-  mutate(species = factor(species, levels = c("Rare species", "Common species"))) %>% 
-  mutate( name = factor(name, 
-                        levels = c(
-                          "Community, integrated",
-                          "Community, distance sampling", 
-                          "Community, counts",
-                          "Single species, integrated", 
-                          "Single species, distance sampling",
-                          "Single species, counts"))) %>% 
-  group_by( name, species ) %>% 
-  mutate(n = n()) %>% 
-  mutate( unbiased = sum(contain0 == "contains 0")) %>% 
-  mutate(prop = unbiased / n) %>%
-  mutate(
-    q25 = quantile(mean, c(0.25)),
-    q75 = quantile(mean, c(0.75)),
-    uwhisk = q75 +  1.5 * ( q75 - q25 ),
-    max_mean = max(mean)) %>% 
-  dplyr::select(species, name, prop, q25, q75, uwhisk, max_mean) %>% 
-  distinct(.) %>% 
-  mutate( mean = ifelse(max_mean < uwhisk, max_mean, uwhisk) + 0.515 ) %>% 
-  mutate( prop = paste0(prop * 100, "% unbiased"))
+  "SSDS", "Single species, distance sampling")
 
 alpha1_truth_minus_estimate %>% 
   full_join(icm_for_comparison) %>% 
@@ -192,40 +170,38 @@ alpha1_truth_minus_estimate %>%
                           "Single species, distance sampling",
                           "Single species, counts"))) %>% 
   ggplot(
-    aes( x = mean, y = name, fill = species)) +
+    aes( x = mean, y = rev(name), fill = species)) +
   geom_vline(xintercept = 0,
              color = MetPalettes$Hiroshige[[1]][c(1)],
              linetype = "dashed") +
-  geom_boxplot( outlier.alpha = 0.2) +
-  
-  geom_label(data = labs, aes(label = prop, color = species),
-             size = 1.97,
-             fill = "white",
-             position = position_dodge(width = 0.75),
-             show.legend = FALSE,
-             label.size = NA) +
-  
-  scale_color_manual(values = MetPalettes$Hiroshige[[1]][c(3,7)])+
-  scale_fill_manual(values = MetPalettes$Hiroshige[[1]][c(3,7)])+
+  geom_boxplot( outlier.alpha = 0.2,
+                outlier.size = 0.75, 
+                size = 0.25) +
+  scale_color_manual(values = MetPalettes$Hiroshige[[1]][c(7,9)])+
+  scale_fill_manual(values = MetPalettes$Hiroshige[[1]][c(7,9)])+
   theme_classic() +
   labs(x = "Covariate effect: truth - estimate") +
-  theme(legend.position = "bottom",
-        legend.title = element_blank(), 
-        axis.title.y =element_blank(),
-        axis.text = element_text(size = 7, color = "black"), 
-        axis.title = element_text(size = 8, color = "black"), 
-        legend.text = element_text(size = 7, color = "black"),
-        panel.background = element_rect(fill = "white", color = NA), 
-        plot.background = element_rect(fill = "white", color = NA),
-        legend.margin = margin(0, 0, 0, 0), 
-        legend.box.margin = margin(-10, 0, 0, 0)) + 
-  guides(color = guide_legend(reverse = TRUE))
+  theme(
+    legend.position = "bottom",
+    legend.title = element_blank(), 
+    axis.title.y = element_blank(),
+    axis.text = element_text(size = 10, color = "black"), 
+    axis.title = element_text(size = 11, color = "black"), 
+    legend.text = element_text(size = 10, color = "black"),
+    panel.background = element_rect(fill = "white", color = NA), 
+    plot.background = element_rect(fill = "white", color = NA),
+    legend.margin = margin(0, 12.5, 0, 0), 
+    legend.box.margin = margin(-10, 12.5, 0, 0),
+    axis.line = element_line(size = 0.1, color = "black"), 
+    axis.ticks = element_line(size = 0.1, color = "black")) + 
+  guides(color = guide_legend(reverse = TRUE)) +
+  scale_y_discrete(limits = rev)
 
 setwd(here::here("figures"))
 ggsave(
   "simulation_model_comparison_covariate_v01.png",
-  width = 5.5, 
-  height = 4, 
+  width = 4.75, 
+  height = 3.5, 
   units = "in", 
   dpi = 300
 )
