@@ -42,20 +42,22 @@ Integrated community modeling—an emerging framework in which multiple sources 
 * [tblPreyCensus_2012to2014.csv](./data/tblPreyCensus_2012to2014.csv) - unformatted count data 
 
 ### [figures](./figures): contains figures, and code to create them
-* [density_estimates_mean_v01.png](./figures/density_estimates_mean_v01.png) - Fig. S3 - posterior means of abundance estimates
-* [density_estimates_sd_v01.png](./figures/density_estimates_sd_v01.png) - Fig. S4 - posterior standard deviation of abundance estimates
-* [figure_01.png](./figures/figure_01.png) - Figure 1 - conceptual overview of model
-* [figure_05_contrasts_v01.png](./figures/figure_05_contrasts_v01.png) - Figure 5 - group size & number of group differences between regions
-* [main_simulation_icm_relative_bias_v01.png](./figures/main_simulation_icm_relative_bias_v01.png) - Figure 3 - relative bias of abundance estimates from main simulation
-* [simulation_model_comparison_covariate_v01.png](./figures/simulation_model_comparison_covariate_v01.png) - Figure 4 - accuracy/precision of covariate estimates from ICM & alternative models
-* [study_area_map_v02.png](./figures/study_area_map_v02.png) - map of study area
 * [code_for_figures](./figures/code_for_figures) - folder with scripts to create figures
-   * [figure_02_study_area_map_v01.R](./figures/code_for_figures/figure_02_study_area_map_v01.R) - make study area map
-   * [figure_5_region_comparison_v01.R](./figures/code_for_figures/figure_5_region_comparison_v01.R) - code for fig. 5 (differences between regions)
-   * [figure_s1_s2_simulated_communit_v01.R](./figures/code_for_figures/figure_s1_s2_simulated_communit_v01.R) - plot simulated community example 
-   * [figures_3_4_tables_s2_s3_v01.R](./figures/code_for_figures/figures_3_4_tables_s2_s3_v01.R) - create figures 3 & 4, plus tables s2 and s3
-   * [figures_s3_s4_plot_abundance_estimates_v01.R](./figures/code_for_figures/figures_s3_s4_plot_abundance_estimates_v01.R) - creates Figs. S3, S4
-   
+   * [figure_02_03.R](./figures/code_for_figures/figure_02_03.R) - create figures 2 & 3, plus tables s2 and s3
+   * [figure_04.R](./figures/code_for_figures/figure_04.R) - code for fig. 4 (differences between regions)
+   * [figure_s1_s2.R](./figures/code_for_figures/figure_s1_s2.R) - plot simulated community example 
+   * [figure_s3.R](./figures/code_for_figures/figure_s3.R) - make study area map
+   * [figure_s4_s5.R](./figures/code_for_figures/figure_s4_s5.R) - creates Figs. S4, S5
+* [figure_01.png](./figures/figure_01.png) - Figure 1 - conceptual overview of model
+* [figure_02.png](./figures/figure_02.png) - Figure 2 - main simulation results
+* [figure_03.png](./figures/figure_03.png) - Figure 3 - simulation - comparison to alternative models
+* [figure_04.png](./figures/figure_04.png) - Figure 4 - case study results
+* [figure_s1.png](./figures/figure_s1.png) - Figure S1 - simulated covariate effect
+* [figure_s2.png](./figures/figure_s2.png) - Figure S2 - simulated detection function
+* [figure_s3.png](./figures/figure_s3.png) - Figure S3 - case study map
+* [figure_s4.png](./figures/figure_s4.png) - Figure S4 - case study - transect-level density estimates
+* [figure_s5.png](./figures/figure_s5.png) - Figure S5 - case study - transect-level density estimate uncertainty
+
 ### [results](./results): contains results files
 * [herbivore_case_study_results_v01.RData](./results/herbivore_case_study_results_v01.RData) - Model output for Mara herbivores case study
 * [main_simulation_results_v01.RData](./results/main_simulation_results_v01.RData) - Summarized results from main simulation
