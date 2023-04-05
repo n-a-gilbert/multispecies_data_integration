@@ -142,7 +142,7 @@ panela + panelb + plot_layout( nrow = 1, widths = c(2, 1), guides = "collect") &
 
 setwd(here::here("figures"))
 ggsave(
-  "main_simulation_icm_v01.png",
+  "figure_02.png",
   width = 6, 
   height = 4, 
   units = "in", 
@@ -255,7 +255,7 @@ alpha1_truth_minus_estimate %>%
 
 setwd(here::here("figures"))
 ggsave(
-  "simulation_model_comparison_covariate_v01.png",
+  "figure_03.png",
   width = 4.75, 
   height = 4, 
   units = "in", 

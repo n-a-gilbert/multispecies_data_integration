@@ -253,7 +253,7 @@ nplot + diffplot + plot_layout(widths = c(1, 1))
 
 setwd(here::here("figures"))
 ggsave(
-  "region_comparsion_v01.png", 
+  "figure_04.png", 
   width = 6.5,
   height = 5, 
   units = "in", 

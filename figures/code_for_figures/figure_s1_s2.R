@@ -37,7 +37,7 @@ det_fun <- ggplot() +
 
 setwd(here::here("figures"))
 ggsave(
-  "example_simulated_detection_functions_v01.png", 
+  "figure_s2.png", 
   det_fun, 
   width = 4.5, 
   height = 3.25, 
@@ -78,7 +78,7 @@ cov_plot <- ggplot() +
 
 setwd(here::here("figures"))
 ggsave(
-  "example_covariate_relationships_v01.png", 
+  "figure_s1.png", 
   cov_plot, 
   width = 4.5, 
   height = 3.25, 

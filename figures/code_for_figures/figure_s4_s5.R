@@ -128,7 +128,7 @@ mean_density <- panela + panelb + plot_layout(guides = "collect") &
 
 setwd(here::here("figures"))
 ggsave(
-  "density_estimates_mean_v01.png", 
+  "figure_s4.png", 
   mean_density, 
   width = 7, 
   height = 4, 
@@ -210,7 +210,7 @@ sd_density <- panela_sd + panelb_sd + plot_layout(guides = "collect") &
 
 setwd(here::here("figures"))
 ggsave(
-  "density_estimates_sd_v01.png", 
+  "figure_s5.png", 
   sd_density, 
   width = 7, 
   height = 4, 

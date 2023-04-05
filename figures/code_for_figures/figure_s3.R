@@ -207,7 +207,7 @@ ggdraw() +
 
 setwd(here::here("figures"))
 ggsave(
-  "study_area_map_v02.png",
+  "figure_s3.png",
   width = 7.5, 
   height = 5, 
   units = "in", 
