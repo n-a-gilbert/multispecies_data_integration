@@ -21,7 +21,7 @@ ng_data <- final2 %>%
   dplyr::arrange( sp, site, rep )
 
 setwd(here::here("results"))
-load("herbivore_case_study_results_v01.RData")
+load("herbivore_case_study_results_v04.RData")
 
 sp_key <- tibble(
   sp = 1:11, 
