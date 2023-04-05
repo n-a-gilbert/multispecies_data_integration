@@ -59,7 +59,7 @@ Integrated community modeling—an emerging framework in which multiple sources 
 * [figure_s5.png](./figures/figure_s5.png) - Figure S5 - case study - transect-level density estimate uncertainty
 
 ### [results](./results): contains results files
-* [herbivore_case_study_results_v01.RData](./results/herbivore_case_study_results_v01.RData) - Model output for Mara herbivores case study
+* [herbivore_case_study_results_v04.RData](./resultsherbivore_case_study_results_v04.RData) - Model output for Mara herbivores case study
 * [main_simulation_results_v01.RData](./results/main_simulation_results_v01.RData) - Summarized results from main simulation
 * [simulation_alternative_model_results_v01.RData](./results/simulation_alternative_model_results_v01.RData) - Summarised results for alternative model simulations
 
