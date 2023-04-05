@@ -19,63 +19,88 @@ sp_key <- tibble::tibble(
                 "impala",  "Thomson's", "topi",
                 "warthog", "waterbuck" ) )
 
-sp_n <- MCMCvis::MCMCpstr( out, params = "N_region", type = "chains")[[1]] %>% 
-  reshape::melt(., varnames = c("sp", "region", "iter")) %>% 
-  tibble::as_tibble() %>% 
-  dplyr::mutate( value = log( value ) ) %>% 
-  dplyr::mutate(region = ifelse(region == 1, "Mara", "Talek")) %>% 
-  dplyr::full_join(sp_key) %>% 
-  dplyr::group_by( sp_name, region ) %>% 
+sp_n <- lapply(
+  X = MCMCvis::MCMCpstr( out, params = c("beta0", "alpha0"), type = "chains"),
+  FUN = reshape::melt, 
+  varnames = c("sp", "region", "iter")) %>% 
+  bind_rows(.id = "param") %>% 
+  mutate( param = ifelse(param == "alpha0", "Number of groups", "Group size")) %>%
+  dplyr::mutate(region = ifelse(region == 1, "Mara", "Talek")) %>%
+  mutate( value = exp(value)) %>%
+  as_tibble() %>% 
+  pivot_wider(names_from = param, values_from = value) %>% 
+  mutate( N = `Group size` * `Number of groups`) %>%
+  dplyr::select(sp, region, iter, value = N) %>% 
+  mutate(value = log(value)) %>% 
+  full_join(sp_key) %>% 
+  group_by(sp_name, region) %>% 
   dplyr::summarise( mean = mean(value), 
                     l95 = quantile(value, c(0.025)), 
                     u95 = quantile(value, c(0.975))) %>% 
-  dplyr::mutate(sp_name = factor(sp_name, 
-                                 levels = c("Grant's", "hartebeest", "eland", "giraffe", "elephant", "waterbuck", 
-                                            "warthog", "buffalo", "topi", "Thomson's", "impala")))
+  mutate(sp_name = factor(sp_name, 
+                          levels = c("Grant's", "hartebeest", "eland", "giraffe", "elephant", "waterbuck", 
+                                     "warthog", "buffalo", "topi", "Thomson's", "impala")))
 
-sp_sig <- MCMCvis::MCMCpstr( out, params = "N_region", type = "chains")[[1]] %>% 
-  reshape::melt(., varnames = c("sp", "region", "iter")) %>% 
-  tibble::as_tibble() %>%  
+sp_sig <-
+  lapply(
+    X = MCMCvis::MCMCpstr( out, params = c("beta0", "alpha0"), type = "chains"),
+    FUN = reshape::melt, 
+    varnames = c("sp", "region", "iter")) %>% 
+  bind_rows(.id = "param") %>% 
+  mutate( param = ifelse(param == "alpha0", "Number of groups", "Group size")) %>%
   dplyr::mutate(region = ifelse(region == 1, "Mara", "Talek")) %>%
-  pivot_wider(names_from = region, values_from = value) %>% 
-  mutate( diff = Talek - Mara) %>% 
-  group_by(sp) %>% 
-  summarise( mean = mean(diff), 
-             l95 = quantile(diff, c(0.025)), 
+  mutate( value = exp(value)) %>%
+  as_tibble() %>% 
+  pivot_wider(names_from = param, values_from = value) %>% 
+  mutate( N = `Group size` * `Number of groups`) %>%
+  dplyr::select(sp, region, iter, N) %>%
+  pivot_wider(names_from = region, values_from = N) %>%
+  mutate(diff = Talek - Mara) %>%
+  group_by(sp) %>%
+  summarise( mean = mean(diff),
+             l95 = quantile(diff, c(0.025)),
              u95 = quantile(diff, c(0.975))) %>% 
   full_join(sp_key) %>% 
   mutate(region = ifelse( mean > 0, "Talek", "Mara")) %>% 
   mutate(sig = ifelse( l95 < 0 & u95 > 0, NA, "*")) %>% 
   dplyr::select(sp_name, sig, region) %>% 
-  add_column( mean = -3.9)
+  add_column( mean = -3.45)
 
-com_n <- MCMCvis::MCMCpstr( out, 
-                            params = c("mu_N"),
-                            type = "chains")[[1]] %>%
-  reshape::melt(., varnames = c("region", "iter")) %>% 
+com_n <- lapply(
+  X = MCMCvis::MCMCpstr( out, params = c("mu_beta0", "mu_alpha0"), type = "chains"),
+  FUN = reshape::melt, 
+  varnames = c("region", "iter")) %>% 
+  bind_rows(.id = "param") %>% 
   as_tibble() %>% 
-  mutate(region = parse_number(as.character(region))) %>% 
-  mutate(region = ifelse(region == 1, "Mara", "Talek")) %>% 
+  separate( region, into = c("junk", "region"), sep = "\\[") %>% 
+  mutate(region = parse_number(region)) %>% 
+  mutate( param = ifelse(param == "mu_alpha0", "Number of groups", "Group size")) %>%
+  mutate( value = exp(value)) %>% 
+  dplyr::select( param, region, iter, value ) %>%
+  pivot_wider(names_from = param, values_from = value) %>%
+  mutate( value = `Group size` * `Number of groups`) %>%
   mutate(value = log(value)) %>% 
-  group_by(region) %>% 
-  summarise( mean = mean(value), 
-             l95 = quantile(value, c(0.025)), 
-             u95 = quantile(value, c(0.975)))
+  dplyr::mutate(region = ifelse(region == 1, "Mara", "Talek")) %>%
+  
+  group_by( region) %>% 
+  dplyr::summarise( mean = mean(value), 
+                    l95 = quantile(value, c(0.025)), 
+                    u95 = quantile(value, c(0.975))) 
 
 ( nplot <- ggplot() +
     geom_rect(
-      data = com_n, 
-      aes( xmin = l95, 
+      data = com_n,
+      aes( xmin = l95,
            xmax = u95,
-           fill = region), 
-      ymin = -Inf, 
+           fill = region),
+      ymin = -Inf,
       ymax = Inf,
       alpha = 0.1) +
     geom_vline(
-      data = com_n, 
-      aes(xintercept = mean, 
-          color = region), 
-      size = 1, 
+      data = com_n,
+      aes(xintercept = mean,
+          color = region),
+      size = 1,
       alpha = 0.2) +
     geom_errorbar(
       data = sp_n, 
@@ -93,10 +118,10 @@ com_n <- MCMCvis::MCMCpstr( out,
           color = region),
       size = 3,
       position = position_dodge(width = 0.5)) +
-    geom_text( data = sp_sig, 
-               aes(x = mean, 
-                   y = sp_name, 
-                   label = sig, 
+    geom_text( data = sp_sig,
+               aes(x = mean,
+                   y = sp_name,
+                   label = sig,
                    color = region),
                size = 6,
                vjust = 0.75,
@@ -106,8 +131,8 @@ com_n <- MCMCvis::MCMCpstr( out,
                       values = MetBrewer::MetPalettes$Greek[[1]][c(2, 5)]) +
     scale_color_manual( "Region",
                         values = MetBrewer::MetPalettes$Greek[[1]][c(2, 5)]) +
-    scale_x_continuous( limits = c(-4, 5.75), 
-                        expand = c(0.01, 0)) +
+    scale_x_continuous( limits = c(-3.5, 5.5),
+                        expand = c(0.02, 0)) +
     theme_minimal() +
     labs( x = " Log ( Abundance ) ",
           title = "(a)") + 
@@ -125,80 +150,111 @@ com_n <- MCMCvis::MCMCpstr( out,
     guides(color = guide_legend(reverse = TRUE), 
            fill = guide_legend(reverse = TRUE)) )
 
-community <- MCMCvis::MCMCsummary( out, params = c( "mu_alpha0_contrast",
-                                                    "mu_beta0_contrast" ) ) %>%
-  tibble::as_tibble( rownames = "param" ) %>%
-  dplyr::mutate( type = base::ifelse( base::grepl("alpha", param),
-                                      "Number of groups", "Group size")) %>%
-  dplyr::mutate( type = base::factor( type, levels = c("Number of groups", "Group size"))) %>%
-  dplyr::select( type, mean, l95 = `2.5%`, u95 = `97.5%` )
+species_ng_gs <- lapply(
+  X = MCMCvis::MCMCpstr( out, params = c("beta0", "alpha0"), type = "chains"),
+  FUN = reshape::melt, 
+  varnames = c("sp", "region", "iter")) %>% 
+  bind_rows(.id = "param") %>% 
+  mutate( param = ifelse(param == "alpha0", "Number of groups", "Group size")) %>%
+  dplyr::mutate(region = ifelse(region == 1, "Mara", "Talek")) %>%
+  mutate( value = exp(value)) %>% 
+  pivot_wider(names_from = region, values_from = value) %>% 
+  mutate( diff = Talek - Mara) %>% 
+  group_by(sp, param) %>% 
+  summarise( mean = mean(diff), 
+             l95 = quantile(diff, c(0.025)), 
+             u95 = quantile(diff, c(0.975))) %>% 
+  full_join(sp_key) %>% 
+  mutate( param = factor(param, 
+                         levels = c("Number of groups", "Group size")), 
+          sp_name = factor(sp_name,
+                           levels = c("Grant's", "hartebeest", "eland", "giraffe", "elephant", "waterbuck",
+                                      "warthog", "buffalo", "topi", "Thomson's", "impala")))
 
-species <- MCMCvis::MCMCsummary(out, params = c("alpha0_contrast", "beta0_contrast")) %>%
-  tibble::as_tibble( rownames = "param" ) %>%
-  tidyr::separate( param, into = c("param", "sp"), sep = "_") %>%
-  dplyr::mutate(sp = readr::parse_number(sp)) %>%
-  dplyr::mutate( type = base::ifelse(grepl("alpha", param), "Number of groups", "Group size")) %>%
-  dplyr::mutate(type = base::factor(type, levels = c("Number of groups", "Group size"))) %>%
-  dplyr::full_join( sp_key ) %>%
-  dplyr::select( sp_name, type, mean, l95 = `2.5%`, u95 = `97.5%`) %>%
-  dplyr::group_by( type ) %>%
-  dplyr::arrange( mean ) %>%
+com_ng_gs <- lapply(
+  X = MCMCvis::MCMCpstr( out, params = c("mu_beta0", "mu_alpha0"), type = "chains"),
+  FUN = reshape::melt, 
+  varnames = c("region", "iter")) %>% 
+  bind_rows() %>%
+  as_tibble() %>% 
+  mutate( param = ifelse( grepl("alpha0", region), "Number of groups", "Group size")) %>% 
+  separate(region, into = c("junk", "region"), sep = "\\[") %>% 
+  mutate(region = parse_number(region)) %>% 
+  dplyr::mutate(region = ifelse(region == 1, "Mara", "Talek")) %>% 
+  mutate( value = exp(value)) %>% 
+  pivot_wider(names_from = region, values_from = value) %>% 
+  mutate( diff = Talek - Mara)%>% 
+  group_by(param) %>% 
+  summarise( mean = mean(diff), 
+             l95 = quantile(diff, c(0.025)), 
+             u95 = quantile(diff, c(0.975))) %>% 
+  mutate( param = factor(param, 
+                         levels = c("Number of groups", "Group size")))
+
+
+labs <- tibble(
+  param = c("Number of groups", "Group size"),
+  sp_name = c("hartebeest", "hartebeest"),
+  mean = c(10, 10),
+  label = c("More groups in Talek", "Larger groups in Talek")) %>% 
   mutate(sp_name = factor(sp_name,
                           levels = c("Grant's", "hartebeest", "eland", "giraffe", "elephant", "waterbuck",
-                                     "warthog", "buffalo", "topi", "Thomson's", "impala")))
+                                     "warthog", "buffalo", "topi", "Thomson's", "impala"))) %>% 
+  mutate( param = factor(param, 
+                         levels = c("Number of groups", "Group size")))
 
-( average_plot <-
-    ggplot() +
-    geom_rect( data = community,
-               aes( xmin = l95,
-                    xmax = u95),
-               ymin = -Inf,
+( diffplot <- ggplot(  ) +
+    geom_rect( data = com_ng_gs, 
+               aes( xmin = l95, 
+                    xmax = u95), 
+               ymin = -Inf, 
                ymax = Inf,
-               fill = MetBrewer::MetPalettes$Hiroshige[[1]][7],
-               color = NA,
-               alpha = 0.3 ) +
-    geom_vline( data = community,
-                aes( xintercept = mean ),
-                color =  MetBrewer::MetPalettes$Hiroshige[[1]][7],
-                size = 1,
-                alpha = 0.3 ) +
+               alpha = 0.2,
+               fill = MetBrewer::MetPalettes$Hiroshige[[1]][7]) +
+    geom_vline(data = com_ng_gs, 
+               aes( xintercept = mean),
+                color = MetBrewer::MetPalettes$Hiroshige[[1]][7],
+               alpha = 0.2, 
+               size = 1) +
     geom_vline( xintercept = 0,
                 color = MetBrewer::MetPalettes$Hiroshige[[1]][1],
                 linetype = "dashed" ) +
-    facet_wrap( ~type, ncol = 1 ) +
-    geom_errorbar( data = species,
-                   aes( y = sp_name,
-                        xmin = l95,
-                        xmax = u95 ),
-                   width = 0,
-                   size = 1,
+    geom_errorbar( data = species_ng_gs, 
+                   aes( y = sp_name, xmin = l95, xmax = u95),
+                   width = 0, size = 1,
                    color = MetBrewer::MetPalettes$Hiroshige[[1]][9] ) +
-    geom_point( data = species,
-                aes( y = sp_name,
-                     x = mean ),
-                size = 3,
+    geom_point( data = species_ng_gs, 
+                aes(y = sp_name, x = mean), 
+                size  = 3, 
                 color = MetBrewer::MetPalettes$Hiroshige[[1]][9] ) +
+    geom_text(
+      data = labs, 
+      aes( y = sp_name, 
+           x = mean, 
+           label = label),
+      size = 2.5,
+      color = MetBrewer::MetPalettes$Hiroshige[[1]][1]) +
+  facet_wrap(~param, ncol = 1)  +
     theme_minimal() +
-    scale_x_continuous( limits = c(-3.03, 3.54),
-                        breaks = c( -3, -1.5, 0, 1.5, 3)) +
-    labs(x = "Contrast ( Talek - Mara )",
-         title = "(b)") +
-    theme(axis.title.y = element_blank(),
-          axis.title.x = element_text(size = 11, color = "black"),
-          axis.text = element_text(color = "black", size = 10),
-          plot.title = element_text(color = "black", size = 10),
-          strip.text = element_text(color = "black", size = 11),
-          axis.line = element_line(color = "black", size = 0.1),
-          plot.background = element_rect(color = NA, fill = "white"),
-          panel.background = element_rect(color = NA, fill = "white"),
-          panel.grid = element_blank() ) )
+    scale_x_continuous(breaks = c(-5, 0, 5, 10, 15)) +
+    labs( x = " Talek - Mara ",
+          title = "(b)") + 
+    theme( panel.grid = element_blank(),
+           axis.title.y = element_blank(),
+           plot.title = element_text(color = "black", size = 10),
+           axis.text = element_text(color = "black", size = 10),
+           axis.title.x = element_text(color = "black", size = 11),
+           axis.line = element_line(color = "black", size = 0.1),
+           plot.background = element_rect(color = NA, fill = "white"), 
+           panel.background = element_rect(color = NA, fill = "white")) )
 
-nplot + average_plot + plot_layout(widths = c(1.5, 1))
+
+nplot + diffplot + plot_layout(widths = c(1, 1))
 
 setwd(here::here("figures"))
 ggsave(
   "region_comparsion_v01.png", 
-  width = 7,
+  width = 6.5,
   height = 5, 
   units = "in", 
   dpi = 300)
