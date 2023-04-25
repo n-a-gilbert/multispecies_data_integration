@@ -45,10 +45,10 @@ N_DS <- MCMCsummary(out, params = "N_ds") %>%
 panela <- ggplot( N_DS, 
         aes( y = site, x = rep, fill = log1p(density_mean))) +
   facet_wrap( ~sp_name ) +
-  geom_tile() + 
+  geom_tile(color = NA) + 
   scale_fill_gradientn(colors = met.brewer(name="Hiroshige", n=100,
                                            type="continuous",
-                                           direction = 1),
+                                           direction = -1),
                        limits = c(0, 6.83)) +
   geom_hline(yintercept = 13.5, color = "black", size = 0.7) + 
   theme_minimal() +
@@ -90,10 +90,10 @@ N_C <- MCMCsummary(out, params = "N") %>%
 panelb <- ggplot( N_C, 
         aes( y = site, x = rep, fill = log1p(density_mean))) +
   facet_wrap( ~sp_name ) +
-  geom_tile() + 
+  geom_tile(color = NA) + 
   scale_fill_gradientn(colors = met.brewer(name="Hiroshige", n=100,
                                            type="continuous",
-                                           direction = 1),
+                                           direction = -1),
                        limits = c(0, 6.83)) +
   geom_hline(yintercept = 6.5, color = "black", size = 0.7) + 
   theme_minimal() +
@@ -139,10 +139,10 @@ ggsave(
 panela_sd <- ggplot( N_DS, 
         aes( y = site, x = rep, fill = log1p(density_sd))) +
   facet_wrap( ~sp_name ) +
-  geom_tile() + 
+  geom_tile(color = NA) + 
   scale_fill_gradientn(colors = met.brewer(name="Hiroshige", n=100,
                                            type="continuous",
-                                           direction = 1),
+                                           direction = -1),
                        limits = c(0, 4.56)) +
   geom_hline(yintercept = 13.5, color = "black", size = 0.7) + 
   theme_minimal() +
@@ -172,10 +172,10 @@ panela_sd <- ggplot( N_DS,
 panelb_sd <- ggplot( N_C, 
         aes( y = site, x = rep, fill = log1p(density_sd))) +
   facet_wrap( ~sp_name ) +
-  geom_tile() + 
+  geom_tile(color = NA) + 
   scale_fill_gradientn(colors = met.brewer(name="Hiroshige", n=100,
                                            type="continuous",
-                                           direction = 1),
+                                           direction = -1),
                        limits = c(0, 4.56)) +
   geom_hline(yintercept = 6.5, color = "black", size = 0.7) + 
   theme_minimal() +

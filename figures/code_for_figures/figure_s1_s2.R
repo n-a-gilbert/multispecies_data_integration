@@ -27,9 +27,12 @@ spp <- expand.grid(sp = 1:nsp,
   mutate(p = exp ( - distances * distances / (2 * omega * omega)))
 
 det_fun <- ggplot() + 
-  geom_line(data = spp, aes(x = distances, y = p, group = factor(sp)), alpha = 0.1) + 
-  geom_line(data = com, aes(x = distances, y = p), color = "red", size = 1.5) +
-  labs(x = "Distance (m) from transect", 
+  geom_line(data = spp, aes(x = distances, y = p, group = factor(sp)),
+            color = MetBrewer::MetPalettes$Hiroshige[[1]][10],
+              alpha = 0.1) + 
+  geom_line(data = com, aes(x = distances, y = p), color = MetBrewer::MetPalettes$Hiroshige[[1]][1],
+            size = 1.5) +
+  labs(x = "Distance (m) from observer", 
        y = "Detection probability") +
   theme_minimal() +
   theme(axis.text = element_text(size = 8, color = "black"),
@@ -68,8 +71,12 @@ com_cov <- expand.grid(x = seq(from = -2, to = 2, by = 0.1)) %>%
   mutate(lp = alpha0 + alpha1 * x)
 
 cov_plot <- ggplot() + 
-  geom_line(data = spp_cov, aes(x = x, y = lp, group = sp), alpha = 0.1) + 
-  geom_line(data = com_cov, aes(x = x, y = lp), color = "red", size = 1.5) +
+  geom_line(data = spp_cov, aes(x = x, y = lp, group = sp),
+            color = MetBrewer::MetPalettes$Hiroshige[[1]][10],
+            alpha = 0.1) + 
+  geom_line(data = com_cov, aes(x = x, y = lp), 
+            color = MetBrewer::MetPalettes$Hiroshige[[1]][1],
+            size = 1.5) +
   labs(x = "Covariate", 
        y = "Log(expected number of groups)") +
   theme_minimal() +

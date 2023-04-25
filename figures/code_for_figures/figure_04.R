@@ -17,7 +17,13 @@ sp_key <- tibble::tibble(
   sp_name =  c( "buffalo", "eland", "elephant",
                 "giraffe", "Grant's", "hartebeest",
                 "impala",  "Thomson's", "topi",
-                "warthog", "waterbuck" ) )
+                "warthog", "waterbuck" ),
+  mass = c(592666, 562592.7, 3824540, 964654.7, 55464.46,
+           160937.9,  52591.69, 22907.43, 136000.3,
+           82499.99, 204393.5)) %>% 
+  arrange(mass) %>% 
+  mutate( sp_name = factor(sp_name, levels = unique(sp_name)))
+
 
 sp_n <- lapply(
   X = MCMCvis::MCMCpstr( out, params = c("beta0", "alpha0"), type = "chains"),
@@ -36,10 +42,7 @@ sp_n <- lapply(
   group_by(sp_name, region) %>% 
   dplyr::summarise( mean = mean(value), 
                     l95 = quantile(value, c(0.025)), 
-                    u95 = quantile(value, c(0.975))) %>% 
-  mutate(sp_name = factor(sp_name, 
-                          levels = c("Grant's", "hartebeest", "eland", "giraffe", "elephant", "waterbuck", 
-                                     "warthog", "buffalo", "topi", "Thomson's", "impala")))
+                    u95 = quantile(value, c(0.975)))
 
 sp_sig <-
   lapply(
@@ -95,7 +98,7 @@ com_n <- lapply(
            fill = region),
       ymin = -Inf,
       ymax = Inf,
-      alpha = 0.1) +
+      alpha = 0.2) +
     geom_vline(
       data = com_n,
       aes(xintercept = mean,
@@ -128,9 +131,9 @@ com_n <- lapply(
                fontface = "bold",
                show.legend = FALSE) +
     scale_fill_manual("Region",
-                      values = MetBrewer::MetPalettes$Greek[[1]][c(2, 5)]) +
+                      values = MetBrewer::MetPalettes$Tam[[1]][c(3, 7)]) +
     scale_color_manual( "Region",
-                        values = MetBrewer::MetPalettes$Greek[[1]][c(2, 5)]) +
+                        values = MetBrewer::MetPalettes$Tam[[1]][c(3, 7)]) +
     scale_x_continuous( limits = c(-3.5, 5.5),
                         expand = c(0.02, 0)) +
     theme_minimal() +
@@ -140,7 +143,7 @@ com_n <- lapply(
            axis.title.y = element_blank(),
            legend.text = element_text(color = "black", size = 10), 
            legend.title = element_text(color = "black", size = 11),
-           legend.position = c(0.8, 0.1),
+           legend.position = c(0.9, 0.9),
            plot.title = element_text(color = "black", size = 10),
            axis.text = element_text(color = "black", size = 10),
            axis.title.x = element_text(color = "black", size = 11),
@@ -166,10 +169,7 @@ species_ng_gs <- lapply(
              u95 = quantile(diff, c(0.975))) %>% 
   full_join(sp_key) %>% 
   mutate( param = factor(param, 
-                         levels = c("Number of groups", "Group size")), 
-          sp_name = factor(sp_name,
-                           levels = c("Grant's", "hartebeest", "eland", "giraffe", "elephant", "waterbuck",
-                                      "warthog", "buffalo", "topi", "Thomson's", "impala")))
+                         levels = c("Number of groups", "Group size")))
 
 com_ng_gs <- lapply(
   X = MCMCvis::MCMCpstr( out, params = c("mu_beta0", "mu_alpha0"), type = "chains"),
