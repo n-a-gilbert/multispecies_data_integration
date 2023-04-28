@@ -227,8 +227,7 @@ alpha1_truth_minus_estimate %>%
     aes( x = mean, y = rev(name), fill = species)) +
   scale_y_discrete(expand = c(0, 0)) +
   geom_vline(xintercept = 0,
-             color = MetPalettes$Hiroshige[[1]][c(1)],
-             linetype = "dashed") +
+             color = MetPalettes$Hiroshige[[1]][c(1)]) +
   geom_boxplot( outlier.alpha = 0.2,
                 outlier.size = 0.75, 
                 size = 0.25) +
