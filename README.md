@@ -38,20 +38,20 @@ Integrated community models—an emerging framework in which multiple data sourc
   * [reserve](./data/Shapefiles/reserve) - shapefile for reserve / management zone boundaries
 * [Herbivore Utilization Complete.csv](./data/Herbivore%20Utilization%20Complete.csv) - unformatted distance sampling data
 * [count_data_v01.RData](./data/count_data_v01.RData) - formatted count data
-* [distance_sampling_data_v01.RData](./data/distance_smapling_data_v01.RData) - formatted distance sampling data
-
-| Variable name | Meaning |
-|---------------|---------|
-| sp | Species id |
-| site | Site (transect) id |
-| rep | Visit id |
-| gs | Observed group size |
-| dclass | Distance class (1 through 40) of observed group |
-| ng | Observed number of groups for species x site x rep combo |
-| area | Area offset for transect |
-| region | Binary variable indicating Mara (0) or Talek (1) region |
-| date | Date of survey |
-| sp_name | common name of species |
+* [distance_sampling_data_v01.RData](./data/distance_smapling_data_v01.RData) - formatted distance sampling data. This .RData file contains 3 objects:
+  * final2: a dataframe containing the following columns: 
+  | Variable name | Meaning |
+  |---------------|---------|
+  | sp | Species id |
+  | site | Site (transect) id |
+  | rep | Visit id |
+  | gs | Observed group size |
+  | dclass | Distance class (1 through 40) of observed group |
+  | ng | Observed number of groups for species x site x rep combo |
+  | area | Area offset for transect |
+  | region | Binary variable indicating Mara (0) or Talek (1) region |
+  | date | Date of survey |
+  | sp_name | common name of species |
 
 * [tblPreyCensus_2012to2014.csv](./data/tblPreyCensus_2012to2014.csv) - unformatted count data 
 
