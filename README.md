@@ -128,6 +128,50 @@ Integrated community models—an emerging framework in which multiple data sourc
   * **out** A list of the MCMC chains with the posterior samples for model parameters
   * **model.code** Code for the Nimble model
 
-* [main_simulation_results_v01.RData](./results/main_simulation_results_v01.RData) - Summarized results from main simulation
+* [main_simulation_results_v01.RData](./results/main_simulation_results_v01.RData) - Summarized results from main simulation. This .RData file contains 4 dataframes:
+  * **icm_a1**. This summarizes model estimates of a covariate effect.
+
+    | Variable name | Meaning |
+    |---------------|---------|
+    | simrep | Which replicate simulation (1 through 100) |
+    | sp | Species id |
+    | mean | Posterior mean of difference between estimate and true value |
+    | sd | Posterior standard deviation of difference between estimate and true value |
+    | l95 | Lower bound of 95% credible interval of difference between estimate and true value |
+    | u95 | Upper bound of 95% credible interval of difference between estimate and true value |
+    | contain0 | Does the 95% credible interval of the difference between the estimate and true value contain 0? |
+    | nsites_tc_fact | Which relative data amount scenario? 1 = same number of distance sampling and count transects, 4 = 4x more count transects |
+    | p_bias | Which relative detectability scenario?  -1 = count detectability 10% lower, 0 = same detectability |
+    
+  * **icm_info**. True values of parameters used to simulate data
+
+    | Variable name | Meaning |
+    |---------------|---------|
+    | sp | Species id |
+    | totDS | Total number of individuals at distance sampling sites |
+    | totTC | Total number of individuals at count sites |
+    | alpha0 | Number-of-groups intercept |
+    | alpha1 | Effect of covariate on number-of-groups |
+    | beta0 | Group size intercept |
+    | gamma0 | Intercept for scale parameter in detection function |
+    | zeta | Hyperparameter for number-of-group overdispersion |
+    | xi | Hyperparameter for group size overdispersion |
+    | simrep | Which replicate simulation (1 through 100) |
+    
+  * **icm_n_ds_rb*.* Relative bias of estimated abundance underlying distance sampling data.
+
+    | Variable name | Meaning |
+    |---------------|---------|
+    | simrep | Which replicate simulation (1 through 100) |
+    | sp | Species id |
+    | mean | Posterior mean of relative bias |
+    | sd | Posterior sd of relative bias |
+    | l95 | Lower bound of 95% credible interval for relative bias |
+    | u95 | Upper bound of 95% credible interval for relative bias |
+    | contain0 | Does the 95% credible interval for relative bias contain 0 (no bias) |
+    | nsites_tc_fact | Which relative data amount scenario? 1 = same number of distance sampling and count transects, 4 = 4x more count transects |
+    | p_bias | Which relative detectability scenario?  -1 = count detectability 10% lower, 0 = same detectability |
+
+  * **icm_n_tc_rb**. Relative bias of estimated abundance underlying count data. Same variable definitions as above.   
 * [simulation_alternative_model_results_v01.RData](./results/simulation_alternative_model_results_v01.RData) - Summarised results for alternative model simulations
 
