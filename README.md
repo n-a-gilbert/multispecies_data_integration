@@ -39,6 +39,9 @@ Integrated community models—an emerging framework in which multiple data sourc
 * [Herbivore Utilization Complete.csv](./data/Herbivore%20Utilization%20Complete.csv) - unformatted distance sampling data
 * [count_data_v01.RData](./data/count_data_v01.RData) - formatted count data
 * [distance_sampling_data_v01.RData](./data/distance_smapling_data_v01.RData) - formatted distance sampling data. This .RData file contains 3 objects:
+  * b: A scalar, the maximum distance to which animals are counted (1000 m)
+  * mdpt: A vector, the distance (in m) to the midpoint of each distance bin from the transect line
+  * v: A scalar, the width (in m) of the distance bins
   * final2: a dataframe containing the following columns:
     
   | Variable name | Meaning |
