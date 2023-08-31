@@ -125,6 +125,9 @@ Integrated community models—an emerging framework in which multiple data sourc
     | OFFSET_TC | Area offset for count transects |
     | MASS | Body mass of each species |
 
+  * **out** A list of the MCMC chains with the posterior samples for model parameters
+  * **model.code** Code for the Nimble model
+
 * [main_simulation_results_v01.RData](./results/main_simulation_results_v01.RData) - Summarized results from main simulation
 * [simulation_alternative_model_results_v01.RData](./results/simulation_alternative_model_results_v01.RData) - Summarised results for alternative model simulations
 
