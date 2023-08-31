@@ -158,7 +158,7 @@ Integrated community models—an emerging framework in which multiple data sourc
     | xi | Hyperparameter for group size overdispersion |
     | simrep | Which replicate simulation (1 through 100) |
     
-  * **icm_n_ds_rb*.* Relative bias of estimated abundance underlying distance sampling data.
+  * **icm_n_ds_rb**. Relative bias of estimated abundance underlying distance sampling data.
 
     | Variable name | Meaning |
     |---------------|---------|
@@ -173,5 +173,6 @@ Integrated community models—an emerging framework in which multiple data sourc
     | p_bias | Which relative detectability scenario?  -1 = count detectability 10% lower, 0 = same detectability |
 
   * **icm_n_tc_rb**. Relative bias of estimated abundance underlying count data. Same variable definitions as above.   
-* [simulation_alternative_model_results_v01.RData](./results/simulation_alternative_model_results_v01.RData) - Summarised results for alternative model simulations
+* [simulation_alternative_model_results_v01.RData](./results/simulation_alternative_model_results_v01.RData) - Summarised results for alternative model simulations. This .RData file contains 3 data frames:
+  * **alpha1_truth_minus_estimate**.  
 
