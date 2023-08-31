@@ -42,9 +42,16 @@ Integrated community models—an emerging framework in which multiple data sourc
 
 | Variable name | Meaning |
 |---------------|---------|
-| sp            | Species id |
-| site          | Site (transect) id |
-
+| sp | Species id |
+| site | Site (transect) id |
+| rep | Visit id |
+| gs | Observed group size |
+| dclass | Distance class (1 through 40) of observed group |
+| ng | Observed number of groups for species x site x rep combo |
+| area | Area offset for transect |
+| region | Binary variable indicating Mara (0) or Talek (1) region |
+| date | Date of survey |
+| sp_name | common name of species |
 
 * [tblPreyCensus_2012to2014.csv](./data/tblPreyCensus_2012to2014.csv) - unformatted count data 
 
