@@ -37,7 +37,21 @@ Integrated community models—an emerging framework in which multiple data sourc
   * [Transects](./data/Shapefiles/Transects) - shapefiles for transects where count data was collected
   * [reserve](./data/Shapefiles/reserve) - shapefile for reserve / management zone boundaries
 * [Herbivore Utilization Complete.csv](./data/Herbivore%20Utilization%20Complete.csv) - unformatted distance sampling data
-* [count_data_v01.RData](./data/count_data_v01.RData) - formatted count data
+* [count_data_v01.RData](./data/count_data_v01.RData) - formatted count data. This .RData file contains 1 object:
+  * **transect_data**: a dataframe containing the following columns:
+ 
+    | Variable name | Meaning |
+    |---------------|---------|
+    | transect | Transect name |
+    | sp_name | Common name of species |
+    | date | Date of survey |
+    | sp | Species id |
+    | site | Site (transect} id |
+    | rep | Visit id |
+    | count | Count of the total number of individuals of a species observed on a survey |
+    | area | Area offset for transect |
+    | region | Binary variable indicating Mara (0) or Talek (1) region |
+
 * [distance_sampling_data_v01.RData](./data/distance_smapling_data_v01.RData) - formatted distance sampling data. This .RData file contains 3 objects:
   * **b**: A scalar, the maximum distance to which animals are counted (1000 m)
   * **mdpt**: A vector, the distance (in m) to the midpoint of each distance bin from the transect line
@@ -55,7 +69,7 @@ Integrated community models—an emerging framework in which multiple data sourc
   | area | Area offset for transect |
   | region | Binary variable indicating Mara (0) or Talek (1) region |
   | date | Date of survey |
-  | sp_name | common name of species |
+  | sp_name | Common name of species |
 
 * [tblPreyCensus_2012to2014.csv](./data/tblPreyCensus_2012to2014.csv) - unformatted count data 
 
