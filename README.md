@@ -39,7 +39,8 @@ Integrated community models—an emerging framework in which multiple data sourc
 * [Herbivore Utilization Complete.csv](./data/Herbivore%20Utilization%20Complete.csv) - unformatted distance sampling data
 * [count_data_v01.RData](./data/count_data_v01.RData) - formatted count data
 * [distance_sampling_data_v01.RData](./data/distance_smapling_data_v01.RData) - formatted distance sampling data. This .RData file contains 3 objects:
-  * final2: a dataframe containing the following columns: 
+  * final2: a dataframe containing the following columns:
+    
   | Variable name | Meaning |
   |---------------|---------|
   | sp | Species id |
