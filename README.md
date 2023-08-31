@@ -39,6 +39,13 @@ Integrated community models—an emerging framework in which multiple data sourc
 * [Herbivore Utilization Complete.csv](./data/Herbivore%20Utilization%20Complete.csv) - unformatted distance sampling data
 * [count_data_v01.RData](./data/count_data_v01.RData) - formatted count data
 * [distance_sampling_data_v01.RData](./data/distance_smapling_data_v01.RData) - formatted distance sampling data
+
+| Variable name | Meaning |
+|---------------|---------|
+| sp            | Species id |
+| site          | Site (transect) id |
+
+
 * [tblPreyCensus_2012to2014.csv](./data/tblPreyCensus_2012to2014.csv) - unformatted count data 
 
 ### [figures](./figures): contains figures, and code to create them
