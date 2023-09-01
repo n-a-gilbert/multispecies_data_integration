@@ -15,30 +15,30 @@ Integrated community models—an emerging framework in which multiple data sourc
 
 ### [code](./code): Contains code for preparing case study data, running case study model, and simulations
 *  [case_study_analysis](./code/case_study_analysis)
-   * [herbivore_case_study_analaysis_v01.R](./code/case_study_analysis/herbivore_case_study_analysis_v01.R) - code to run case study model
+   * [herbivore_case_study_analaysis_v01.R](./code/case_study_analysis/herbivore_case_study_analysis_v01.R)  Code to run case study model.
 *  [data_processing](./code/data_processing)
-   * [prepare_distance_sampling_data_v01.R](./code/data_processing/prepare_distance_sampling_data_v01.R) - format case study distance sampling data
-   * [prepare_count_data_v01.R](./code/data_processing/prepare_count_data_v01.R) - format case study count data
+   * [prepare_distance_sampling_data_v01.R](./code/data_processing/prepare_distance_sampling_data_v01.R)  Format case study distance sampling data.
+   * [prepare_count_data_v01.R](./code/data_processing/prepare_count_data_v01.R)  Format case study count data.
 * [simulations](./code/simulations)
-   * [alternative_model_comparison](./code/simulations/alternative_model_comparison) - folder containing scripts to run simulations for alternative single datastream / single-species models
-      * [community_count_v01.R](./code/simulations/alternative_model_comparison/community_count_v01.R) - community count-only model
-      * [community_distance_sampling_v01.R](./code/simulations/alternative_model_comparison/community_distance_sampling_v01.R) - community distance sampling-only model
-      * [single_species_common_count_v01.R](./code/simulations/alternative_model_comparison/single_species_common_count_v01.R) - single species (common) count only model
-      * [single_species_common_distance_sampling_v01.R](./code/simulations/alternative_model_comparison/single_species_common_distance_sampling_v01.R) - single species (common) distance sampling only model
-      * [single_species_common_integrated_v01.R](./code/simulations/alternative_model_comparison/single_species_common_integrated_v01.R) - single species (common) integrated model
-      * [single_species_rare_count_v01.R](./code/simulations/alternative_model_comparison/single_species_rare_count_v01.R) - single species (rare) count only model
-      * [single_species_rare_distance_sampling_v01.R](./code/simulations/alternative_model_comparison/single_species_common_distance_sampling_v01.R) - single species (rare) distance sampling only model
-      * [single_species_rare_integrated_v01.R](./code/simulations/alternative_model_comparison/single_species_rare_integrated_v01.R) - single species (rare) integrated model
-   * [main_simulation_v01.R](./code/simulations/main_simulation_v01.R) - script to run the main simulation
+   * [alternative_model_comparison](./code/simulations/alternative_model_comparison)  Folder containing scripts to run simulations for alternative single datastream / single-species models.
+      * [community_count_v01.R](./code/simulations/alternative_model_comparison/community_count_v01.R)  Community count-only model.
+      * [community_distance_sampling_v01.R](./code/simulations/alternative_model_comparison/community_distance_sampling_v01.R)  Community distance sampling-only model.
+      * [single_species_common_count_v01.R](./code/simulations/alternative_model_comparison/single_species_common_count_v01.R)  Single species (common) count only model.
+      * [single_species_common_distance_sampling_v01.R](./code/simulations/alternative_model_comparison/single_species_common_distance_sampling_v01.R)  Single species (common) distance sampling only model.
+      * [single_species_common_integrated_v01.R](./code/simulations/alternative_model_comparison/single_species_common_integrated_v01.R)  Single species (common) integrated model.
+      * [single_species_rare_count_v01.R](./code/simulations/alternative_model_comparison/single_species_rare_count_v01.R)  Single species (rare) count only model.
+      * [single_species_rare_distance_sampling_v01.R](./code/simulations/alternative_model_comparison/single_species_common_distance_sampling_v01.R)  Single species (rare) distance sampling only model.
+      * [single_species_rare_integrated_v01.R](./code/simulations/alternative_model_comparison/single_species_rare_integrated_v01.R)  Single species (rare) integrated model.
+   * [main_simulation_v01.R](./code/simulations/main_simulation_v01.R)  Script to run the main simulation.
 
 ### [data](./data): Contains data for case study
-* [Shapefiles](./data/Shapefiles) - various shapefiles
-  * [DS](./data/Shapefiles/DS) - shapefiles for distance sampling transects
-  * [Transects](./data/Shapefiles/Transects) - shapefiles for transects where count data was collected
-  * [reserve](./data/Shapefiles/reserve) - shapefile for reserve / management zone boundaries
-* [Herbivore Utilization Complete.csv](./data/Herbivore%20Utilization%20Complete.csv) - unformatted distance sampling data
-* [count_data_v01.RData](./data/count_data_v01.RData) - formatted count data. This .RData file contains 1 object:
-  * **transect_data**: a dataframe containing the following columns:
+* [Shapefiles](./data/Shapefiles)  Various shapefiles.
+  * [DS](./data/Shapefiles/DS)  Shapefiles for distance sampling transects.
+  * [Transects](./data/Shapefiles/Transects)  Shapefiles for transects where count data was collected.
+  * [reserve](./data/Shapefiles/reserve)  Shapefile for reserve / management zone boundaries.
+* [Herbivore Utilization Complete.csv](./data/Herbivore%20Utilization%20Complete.csv)  Unformatted distance sampling data.
+* [count_data_v01.RData](./data/count_data_v01.RData) - Formatted count data. This .RData file contains 1 object:
+  * **transect_data**. A dataframe with the following columns:
  
     | Variable name | Meaning |
     |---------------|---------|
@@ -52,11 +52,11 @@ Integrated community models—an emerging framework in which multiple data sourc
     | area | Area offset for transect |
     | region | Binary variable indicating Mara (0) or Talek (1) region |
 
-* [distance_sampling_data_v01.RData](./data/distance_smapling_data_v01.RData) - formatted distance sampling data. This .RData file contains 3 objects:
-  * **b**: A scalar, the maximum distance to which animals are counted (1000 m)
-  * **mdpt**: A vector, the distance (in m) to the midpoint of each distance bin from the transect line
-  * **v**: A scalar, the width (in m) of the distance bins
-  * **final2**: a dataframe containing the following columns:
+* [distance_sampling_data_v01.RData](./data/distance_smapling_data_v01.RData)  Formatted distance sampling data. This .RData file contains 3 objects:
+  * **b**. A scalar, the maximum distance to which animals are counted (1000 m).
+  * **mdpt**. A vector, the distance (in m) to the midpoint of each distance bin from the transect line.
+  * **v**. A scalar, the width (in m) of the distance bins.
+  * **final2**. A dataframe with the following columns:
     
     | Variable name | Meaning |
     |---------------|---------|
@@ -71,28 +71,28 @@ Integrated community models—an emerging framework in which multiple data sourc
     | date | Date of survey |
     | sp_name | Common name of species |
 
-* [tblPreyCensus_2012to2014.csv](./data/tblPreyCensus_2012to2014.csv) - unformatted count data 
+* [tblPreyCensus_2012to2014.csv](./data/tblPreyCensus_2012to2014.csv)  Unformatted count data. 
 
-### [figures](./figures): contains figures, and code to create them
-* [code_for_figures](./figures/code_for_figures) - folder with scripts to create figures
-   * [figure_02_03.R](./figures/code_for_figures/figure_02_03.R) - create figures 2 & 3, plus tables s2 and s3
-   * [figure_04.R](./figures/code_for_figures/figure_04.R) - code for fig. 4 (differences between regions)
-   * [figure_s1_s2.R](./figures/code_for_figures/figure_s1_s2.R) - plot simulated community example 
-   * [figure_s3.R](./figures/code_for_figures/figure_s3.R) - make study area map
-   * [figure_s4_s5.R](./figures/code_for_figures/figure_s4_s5.R) - creates Figs. S4, S5
-* [figure_01.png](./figures/figure_01.png) - Figure 1 - conceptual overview of model
-* [figure_02.png](./figures/figure_02.png) - Figure 2 - main simulation results
-* [figure_03.png](./figures/figure_03.png) - Figure 3 - simulation - comparison to alternative models
-* [figure_04.png](./figures/figure_04.png) - Figure 4 - case study results
-* [figure_s1.png](./figures/figure_s1.png) - Figure S1 - simulated covariate effect
-* [figure_s2.png](./figures/figure_s2.png) - Figure S2 - simulated detection function
-* [figure_s3.png](./figures/figure_s3.png) - Figure S3 - case study map
-* [figure_s4.png](./figures/figure_s4.png) - Figure S4 - case study - transect-level density estimates
-* [figure_s5.png](./figures/figure_s5.png) - Figure S5 - case study - transect-level density estimate uncertainty
+### [figures](./figures) Contains figures, and code to create them.
+* [code_for_figures](./figures/code_for_figures)  Folder with scripts to create figures.
+   * [figure_02_03.R](./figures/code_for_figures/figure_02_03.R)  Create Figures 2-3, plus Tables S2-S3.
+   * [figure_04.R](./figures/code_for_figures/figure_04.R)  Code for Figure 4 (differences between regions).
+   * [figure_s1_s2.R](./figures/code_for_figures/figure_s1_s2.R)  Plot simulated community example. 
+   * [figure_s3.R](./figures/code_for_figures/figure_s3.R)  Make study area map.
+   * [figure_s4_s5.R](./figures/code_for_figures/figure_s4_s5.R)  Create Figs. S4-S5.
+* [figure_01.png](./figures/figure_01.png)  Figure 1. Conceptual overview of model.
+* [figure_02.png](./figures/figure_02.png)  Figure 2. Main simulation results.
+* [figure_03.png](./figures/figure_03.png)  Figure 3. Simulation - comparison to alternative models.
+* [figure_04.png](./figures/figure_04.png)  Figure 4. Case study results.
+* [figure_s1.png](./figures/figure_s1.png)  Figure S1. Simulated covariate effect.
+* [figure_s2.png](./figures/figure_s2.png)  Figure S2. Simulated detection function.
+* [figure_s3.png](./figures/figure_s3.png)  Figure S3. Case study map.
+* [figure_s4.png](./figures/figure_s4.png)  Figure S4. Case study: transect-level density estimates (posterior mean).
+* [figure_s5.png](./figures/figure_s5.png)  Figure S5. Case study: transect-level density estimate uncertainty (posterior standard deviation).
 
-### [results](./results): contains results files
-* [herbivore_case_study_results_v04.RData](./resultsherbivore_case_study_results_v04.RData) - Model output for Mara herbivores case study. This .RData contains 4 objects
-  * **constants** A list of constants used in Nimble model
+### [results](./results) Contains results files.
+* [herbivore_case_study_results_v04.RData](./resultsherbivore_case_study_results_v04.RData)  Model output for Mara herbivores case study. This .RData contains 4 objects
+  * **constants**. A list of constants used in Nimble model:
 
     | Variable name | Meaning |
     |---------------|---------|
@@ -108,7 +108,7 @@ Integrated community models—an emerging framework in which multiple data sourc
     | REGION_NG | Region index for the number-of-group data |
     | NREGION | Number of regions |
 
-  * **data** A list of data used in the Nimble model
+  * **data**. A list of data used in the Nimble model:
  
     | Variable name | Meaning |
     |---------------|---------|
@@ -125,11 +125,11 @@ Integrated community models—an emerging framework in which multiple data sourc
     | OFFSET_TC | Area offset for count transects |
     | MASS | Body mass of each species |
 
-  * **out** A list of the MCMC chains with the posterior samples for model parameters
-  * **model.code** Code for the Nimble model
+  * **out**. A list of the MCMC chains with the posterior samples for model parameters.
+  * **model.code**. Code for the Nimble model.
 
-* [main_simulation_results_v01.RData](./results/main_simulation_results_v01.RData) - Summarized results from main simulation. This .RData file contains 4 dataframes:
-  * **icm_a1**. This summarizes model estimates of a covariate effect.
+* [main_simulation_results_v01.RData](./results/main_simulation_results_v01.RData)  Summarized results from main simulation. This .RData file contains 4 dataframes:
+  * **icm_a1**. This summarizes model estimates of a covariate effect:
 
     | Variable name | Meaning |
     |---------------|---------|
@@ -143,7 +143,7 @@ Integrated community models—an emerging framework in which multiple data sourc
     | nsites_tc_fact | Which relative data amount scenario? 1 = same number of distance sampling and count transects, 4 = 4x more count transects |
     | p_bias | Which relative detectability scenario?  -1 = count detectability 10% lower, 0 = same detectability |
     
-  * **icm_info**. True values of parameters used to simulate data
+  * **icm_info**. True values of parameters used to simulate data:
 
     | Variable name | Meaning |
     |---------------|---------|
@@ -158,7 +158,7 @@ Integrated community models—an emerging framework in which multiple data sourc
     | xi | Hyperparameter for group size overdispersion |
     | simrep | Which replicate simulation (1 through 100) |
     
-  * **icm_n_ds_rb**. Relative bias of estimated abundance underlying distance sampling data.
+  * **icm_n_ds_rb**. Relative bias of estimated abundance underlying distance sampling data:
 
     | Variable name | Meaning |
     |---------------|---------|
@@ -173,8 +173,8 @@ Integrated community models—an emerging framework in which multiple data sourc
     | p_bias | Which relative detectability scenario?  -1 = count detectability 10% lower, 0 = same detectability |
 
   * **icm_n_tc_rb**. Relative bias of estimated abundance underlying count data. Same variable definitions as above.   
-* [simulation_alternative_model_results_v01.RData](./results/simulation_alternative_model_results_v01.RData) - Summarised results for alternative model simulations. This .RData file contains 3 data frames:
-  * **alpha1_truth_minus_estimate**. Summarises estimates of covariate effect on the number-of-groups.
+* [simulation_alternative_model_results_v01.RData](./results/simulation_alternative_model_results_v01.RData)  Summarised results for alternative model simulations. This .RData file contains 3 data frames:
+  * **alpha1_truth_minus_estimate**. Summarises estimates of covariate effect on the number-of-groups:
 
     | Variable name | Meaning |
     |---------------|---------|
@@ -186,7 +186,7 @@ Integrated community models—an emerging framework in which multiple data sourc
     | u95 | Upper bound of the 95% credible interval for the difference between the true and estimated value for covariate effect |
     | contain0 | Does the 95% credible interval of the difference between the true and estimated value for covariate effect include 0 (unbiased) |
 
-  * **count_abundance_rb**. Summarizes the relative bias of abundance at the count sites
+  * **count_abundance_rb**. Summarizes the relative bias of abundance at the count sites:
 
     | Variable name | Meaning |
     |---------------|---------|
@@ -199,4 +199,3 @@ Integrated community models—an emerging framework in which multiple data sourc
     | contain0 | Does the 95% credible interval for relative bias include 0 (unbiased) |
 
   * **ds_abundance_rb**. Summarizes the relative bias of abundance at the distance sampling sites. Same variables & definitions as above.
-    
