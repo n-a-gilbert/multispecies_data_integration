@@ -186,5 +186,17 @@ Integrated community models—an emerging framework in which multiple data sourc
     | u95 | Upper bound of the 95% credible interval for the difference between the true and estimated value for covariate effect |
     | contain0 | Does the 95% credible interval of the difference between the true and estimated value for covariate effect include 0 (unbiased) |
 
-  * **count_abundance_rb**. Summarizes the relative bias of abundance at the count sites 
+  * **count_abundance_rb**. Summarizes the relative bias of abundance at the count sites
+
+    | Variable name | Meaning |
+    |---------------|---------|
+    | model |  Which model (CC = community count only, CDS = community distance sampling only, ISS = integrated single species, SSC = single species count, SSDS = single species distance sampling) |
+    | species | Which species class - pulled out representative rare and common species from each simrep |
+    | mean | Posterior mean of the relative bias of the abundance estimates for the count sites |
+    | sd | Posterior standard deviation of the relative bias of the abundance estimates for the count sites |
+    | l95 | Lower bound of the 95% credible interval for the relative bias of the abundance estimates for the count sites  |
+    | u95 | Upper bound of the 95% credible interval for the relative bias of the abundance estimates for the count sites |
+    | contain0 | Does the 95% credible interval for relative bias include 0 (unbiased) |
+
+  * **ds_abundance_rb**. Summarizes the relative bias of abundance at the distance sampling sites. Same variables & definitions as above.
     
