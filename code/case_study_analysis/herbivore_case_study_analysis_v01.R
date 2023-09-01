@@ -9,19 +9,19 @@ load("distance_sampling_data_v01.RData")
 load("count_data_v01.RData")
 
 ng_data <- final2 %>%
-  dplyr::select( sp, site, rep, ng, gs, area, region ) %>% 
-  dplyr::filter( !base::is.na( ng ) ) %>% 
-  dplyr::group_by( sp, site, rep, area, region ) %>% 
+  dplyr::select( sp, site, rep, ng, gs, area, region ) |>
+  dplyr::filter( !base::is.na( ng ) ) |>
+  dplyr::group_by( sp, site, rep, area, region ) |>
   dplyr::summarise( ng = base::unique( ng ),
-                    yN_DS = base::sum(gs, na.rm = TRUE ) ) %>% 
+                    yN_DS = base::sum(gs, na.rm = TRUE ) ) |>
   dplyr::arrange( sp, site, rep )
 
-gs_data <- final2 %>% 
-  dplyr::filter( !base::is.na( gs ) ) %>% 
+gs_data <- final2 |>
+  dplyr::filter( !base::is.na( gs ) ) |>
   dplyr::arrange( sp, site, rep )
 
 # from PanTHERIA
-sp_mass <- tibble(
+sp_mass <- tibble::tibble(
   sp_name = c("buffalo", "eland", "elephant", "giraffe", "grants",
               "hartebeest", "impala",  "thomsons", "topi",
               "warthog", "waterbuck"),
@@ -30,9 +30,9 @@ sp_mass <- tibble(
            82499.99, 204393.5))
 
 det_attributes <- final2 %>%
-  dplyr::select( sp, sp_name ) %>% 
-  dplyr::distinct(.) %>% 
-  dplyr::full_join( sp_mass ) %>% 
+  dplyr::select( sp, sp_name ) |>
+  dplyr::distinct() |>
+  dplyr::full_join( sp_mass ) |>
   dplyr::mutate( mass = base::as.numeric( base::scale( base::log( mass ) ) ) )
 
 data <- list(
