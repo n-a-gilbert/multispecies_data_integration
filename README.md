@@ -174,5 +174,17 @@ Integrated community models—an emerging framework in which multiple data sourc
 
   * **icm_n_tc_rb**. Relative bias of estimated abundance underlying count data. Same variable definitions as above.   
 * [simulation_alternative_model_results_v01.RData](./results/simulation_alternative_model_results_v01.RData) - Summarised results for alternative model simulations. This .RData file contains 3 data frames:
-  * **alpha1_truth_minus_estimate**.  
+  * **alpha1_truth_minus_estimate**. Summarises estimates of covariate effect on the number-of-groups.
 
+    | Variable name | Meaning |
+    |---------------|---------|
+    | model | Which model (CC = community count only, CDS = community distance sampling only, ISS = integrated single species, SSC = single species count, SSDS = single species distance sampling) |
+    | species | Which species class - pulled out representative rare and common species from each simrep |
+    | mean | Posterior mean of the difference between the true and estimated value for covariate effect |
+    | sd | Posterior standard deviation of the difference between the true and estimated value for covariate effect |
+    | l95 | Lower bound of the 95% credible interval for the difference between the true and estimated value for covariate effect |
+    | u95 | Upper bound of the 95% credible interval for the difference between the true and estimated value for covariate effect |
+    | contain0 | Does the 95% credible interval of the difference between the true and estimated value for covariate effect include 0 (unbiased) |
+
+  * **count_abundance_rb**. Summarizes the relative bias of abundance at the count sites 
+    
