@@ -58,18 +58,18 @@ Integrated community models—an emerging framework in which multiple data sourc
   * **v**: A scalar, the width (in m) of the distance bins
   * **final2**: a dataframe containing the following columns:
     
-  | Variable name | Meaning |
-  |---------------|---------|
-  | sp | Species id |
-  | site | Site (transect) id |
-  | rep | Visit id |
-  | gs | Observed group size |
-  | dclass | Distance class (1 through 40) of observed group |
-  | ng | Observed number of groups for species x site x rep combo |
-  | area | Area offset for transect |
-  | region | Binary variable indicating Mara (0) or Talek (1) region |
-  | date | Date of survey |
-  | sp_name | Common name of species |
+    | Variable name | Meaning |
+    |---------------|---------|
+    | sp | Species id |
+    | site | Site (transect) id |
+    | rep | Visit id |
+    | gs | Observed group size |
+    |  dclass | Distance class (1 through 40) of observed group |
+    | ng | Observed number of groups for species x site x rep combo |
+    | area | Area offset for transect |
+    | region | Binary variable indicating Mara (0) or Talek (1) region |
+    | date | Date of survey |
+    | sp_name | Common name of species |
 
 * [tblPreyCensus_2012to2014.csv](./data/tblPreyCensus_2012to2014.csv) - unformatted count data 
 
