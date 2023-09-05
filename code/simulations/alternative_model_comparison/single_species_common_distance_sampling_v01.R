@@ -7,14 +7,13 @@ library(parallel)
 library(tidyverse)
 library(extraDistr)
 library(MCMCvis)
-library(here)
 
 sim_icm <- function(
     nsp = 20,          # number of species
     mu_alpha0 = -0.65,
     sigma_alpha0 = 1.7,
     mu_alpha1 = 0.05,    # community average for covariate effect
-    sigma_alpha1 = 0.3,   # standard deviation among species for covariate effect
+    sigma_alpha1 = 0.25,   # standard deviation among species for covariate effect
     mu_beta0 = 1.9,         # average group size for the community
     sigma_beta0 = 1.25,      # standard deviation among species for group size intercept
     mu_gamma0 = 5.5,
@@ -60,18 +59,21 @@ sim_icm <- function(
   
   site_covs <- tibble::tibble(
     site = 1:nsites,
-    x = runif(nsites, -2, 2)) %>% 
+    x = runif(nsites, -2, 2)) |> 
     mutate(x = as.numeric(scale(x)))
   
   ng_df <- expand.grid(sp = 1:nsp,
                        site =  1:nsites,
-                       rep =  1:nrep) %>% 
-    tibble::as_tibble() %>% 
-    dplyr::full_join(sp_df) %>%
-    dplyr::full_join(site_covs) %>% 
-    dplyr::mutate(rho = rgamma(nrow(.), zeta, zeta),
-                  eng = exp ( alpha0 + alpha1 * x )  * rho,
-                  ng = rpois(nrow(.), eng)) 
+                       rep =  1:nrep) |> 
+    tibble::as_tibble() |> 
+    dplyr::full_join(sp_df) |>
+    dplyr::full_join(site_covs) |>
+    dplyr::rename( xvar = x) |> 
+    ( function(x) dplyr::mutate(x,
+                                rho = rgamma(nrow(x), zeta, zeta),
+                                eng = exp( alpha0 + alpha1 * xvar) * rho,
+                                ng = rpois(nrow(x), eng)))()
+  
   
   ng_vector <- c()
   site_vector <- c()
@@ -96,7 +98,7 @@ sim_icm <- function(
     site = site_vector, 
     rep = rep_vector, 
     sp = sp_vector, 
-    group = ng_vector) %>% # group is just a placeholder - means yes, there is a group
+    group = ng_vector) |> # group is just a placeholder - means yes, there is a group
     dplyr::full_join(ng_df)
   
   # assign distances to each group and simulate observation process, based on distance
@@ -137,32 +139,34 @@ sim_icm <- function(
     }
   }
   
-  ds_data_all <- sp_df %>% 
-    dplyr::full_join(data) %>% 
-    dplyr::mutate(phi = rgamma(nrow(.), xi, xi),
-                  egs = exp(beta0) * phi) %>% 
-    dplyr::mutate(gs = ifelse(group == 0, 0, # if there is not a group, observed gs must be 0
-                              extraDistr::rtpois( nrow(.),
-                                                  lambda = egs,
-                                                  a = 0,
-                                                  b = Inf))) %>%
-    dplyr::mutate(gs_obs = ifelse(group_obs == 1, gs, 0)) %>% 
-    dplyr::mutate(dclass = ifelse(gs_obs == 0, NA, dclass)) %>% 
-    dplyr::ungroup() %>% 
-    dplyr::group_by(sp, site, rep) %>% 
-    dplyr::mutate(ng_obs = sum(group_obs)) %>% 
+  ds_data_all <- sp_df |> 
+    dplyr::full_join(data) |>
+    ( function(x) dplyr::mutate(x,
+                                phi = rgamma(nrow(x), xi, xi),
+                                egs = exp(beta0) * phi))() |>
+    ( function(x) dplyr::mutate(x,
+                                gs = ifelse(group == 0, 0, # if there is not a group, observed gs must be 0
+                                            extraDistr::rtpois( nrow(x),
+                                                                lambda = egs,
+                                                                a = 0,
+                                                                b = Inf))))() |> 
+    dplyr::mutate(gs_obs = ifelse(group_obs == 1, gs, 0)) |> 
+    dplyr::mutate(dclass = ifelse(gs_obs == 0, NA, dclass)) |> 
+    dplyr::ungroup() |> 
+    dplyr::group_by(sp, site, rep) |> 
+    dplyr::mutate(ng_obs = sum(group_obs)) |> 
     dplyr::select(sp, site, rep, 
                   dclass,
                   eng, ng, ng_obs,
-                  egs, gs, gs_obs) %>% 
-    dplyr::distinct(.)
+                  egs, gs, gs_obs) |> 
+    dplyr::distinct()
   
-  ds_data <- ds_data_all %>%  
-    dplyr::filter(! (ng_obs > 0 & is.na(dclass))) %>% 
-    dplyr::ungroup() %>% 
-    dplyr::arrange(sp, site, rep) %>% 
-    dplyr::mutate(rowid = row_number()) %>% 
-    dplyr::group_by(sp) %>% 
+  ds_data <- ds_data_all |>  
+    dplyr::filter(! (ng_obs > 0 & is.na(dclass))) |> 
+    dplyr::ungroup() |> 
+    dplyr::arrange(sp, site, rep) |> 
+    dplyr::mutate(rowid = row_number()) |> 
+    dplyr::group_by(sp) |> 
     dplyr::mutate(nobs_start = min(rowid), 
                   nobs_end = max(rowid)) 
   
@@ -192,78 +196,79 @@ sim_icm <- function(
   }
   
   sp_df_tc <-
-    cbind(sp_df, p_tc) %>% 
+    cbind(sp_df, p_tc) |> 
     tibble::as_tibble()
   
   tc_site_covs <- tibble::tibble(
     site = 1:nsites_tc,
-    x_tc = runif(nsites_tc, -2, 2)) %>% 
+    x_tc = runif(nsites_tc, -2, 2)) |> 
     dplyr::mutate(x_tc = as.numeric(scale(x_tc)))
   
-  rare <- ds_data %>% 
-    dplyr::select(sp, site, rep, dclass, gs_obs) %>% 
-    dplyr::filter(!is.na(dclass)) %>% 
-    dplyr::arrange(sp, site, rep) %>% 
-    dplyr::count(sp) %>% 
-    ungroup() %>% 
-    dplyr::full_join(tibble::tibble(sp = 1:20)) %>% 
-    dplyr::mutate(n = replace_na(n, 0)) %>% 
-    dplyr::arrange(n) %>% 
-    dplyr::filter(n > 0) %>% 
-    dplyr::filter(n < max(n)) %>% 
-    dplyr::slice(c(1, n())) %>% 
-    tibble::add_column(stat = c("rare", "common")) %>% 
-    filter(stat == "common") %>% 
-    pull(sp)
+  rare <- ds_data|>
+    dplyr::select(sp, site, rep, dclass, gs_obs)|>
+    dplyr::filter(!is.na(dclass))|>
+    dplyr::arrange(sp, site, rep)|>
+    dplyr::count(sp)|>
+    dplyr::ungroup()|>
+    dplyr::full_join(tibble::tibble(sp = 1:20))|>
+    dplyr::mutate(n = replace_na(n, 0))|>
+    dplyr::arrange(n)|>
+    dplyr::filter(n > 0)|>
+    dplyr::filter(n < max(n))|>
+    dplyr::slice(c(1, n()))|>
+    tibble::add_column(stat = c("rare", "common"))|>
+    dplyr::filter(stat == "common")|>
+    dplyr::pull(sp)
   
   transect_counts <- expand.grid(sp = 1:nsp,
                                  site =  1:nsites_tc,
-                                 rep =  1:nrep) %>% 
-    tibble::as_tibble() %>% 
-    dplyr::full_join(sp_df_tc) %>%
-    dplyr::full_join(tc_site_covs) %>% 
-    dplyr::mutate(rho = rgamma(nrow(.), zeta, zeta),
-                  phi = rgamma(nrow(.), xi, xi),
-                  eng = exp( alpha0 + alpha1 * x_tc) * rho,
-                  egs = exp( beta0 ) * phi,
-                  lambda_ltn = eng * egs,
-                  totalN = rpois(nrow(.), lambda_ltn),
-                  count = rbinom(nrow(.), totalN, p_tc)) %>% 
-    dplyr::arrange(sp) %>%
-    filter(sp == rare) %>%
-    dplyr::mutate(rowid = row_number()) %>% 
-    dplyr::group_by(sp) %>% 
+                                 rep =  1:nrep) |> 
+    tibble::as_tibble() |> 
+    dplyr::full_join(sp_df_tc) |>
+    dplyr::full_join(tc_site_covs) |> 
+    ( function(x) dplyr::mutate(x,
+                                rho = rgamma(nrow(x), zeta, zeta),
+                                phi = rgamma(nrow(x), xi, xi),
+                                eng = exp( alpha0 + alpha1 * x_tc) * rho,
+                                egs = exp( beta0 ) * phi,
+                                lambda_ltn = eng * egs,
+                                totalN = rpois(nrow(x), lambda_ltn),
+                                count = rbinom(nrow(x), totalN, p_tc)))() |> 
+    dplyr::arrange(sp) |> 
+    dplyr::mutate(rowid = row_number()) |> 
+    dplyr::group_by(sp) |> 
     dplyr::mutate(ntc_start = min(rowid), 
                   ntc_end = max(rowid))
   
-  ng_data <- ds_data_all %>%
-    dplyr::group_by(sp, site, rep) %>% 
+  
+  ng_data <- ds_data_all |>
+    dplyr::group_by(sp, site, rep)|>
     dplyr::summarise( ng = unique(ng), 
                       ng_obs = unique(ng_obs), 
                       N = sum(gs), 
-                      yN_DS = sum(gs_obs) ) %>%
-    dplyr::ungroup() %>% 
-    dplyr::arrange(sp, site, rep) %>% 
-    dplyr::filter(sp == rare) %>% 
-    dplyr::mutate(rowid = row_number()) %>% 
-    dplyr::group_by(sp) %>% 
+                      yN_DS = sum(gs_obs) ) |>
+    dplyr::ungroup()|>
+    dplyr::arrange(sp, site, rep)|>
+    dplyr::filter(sp == rare)|>
+    dplyr::mutate(rowid = row_number())|>
+    dplyr::group_by(sp)|>
     dplyr::mutate(ngobs_start = min(rowid), 
-                  ngobs_end = max(rowid)) %>% 
+                  ngobs_end = max(rowid))|>
     dplyr::full_join(site_covs)
   
-  ng_indices <- ng_data %>% 
-    dplyr::select(sp, ngobs_start, ngobs_end) %>% 
-    dplyr::distinct(.)
+  ng_indices <- ng_data |>
+    dplyr::select(sp, ngobs_start, ngobs_end)|>
+    dplyr::distinct()
   
-  transect_indices <- transect_counts %>% 
-    dplyr::select(sp, ntc_start, ntc_end) %>% 
-    dplyr::distinct(.)
+  transect_indices <- transect_counts |>
+    dplyr::select(sp, ntc_start, ntc_end) |>
+    dplyr::distinct()
   
-  ds_data_final <- ds_data %>% 
-    dplyr::select(sp, site, rep, dclass, gs_obs) %>% 
-    dplyr::filter(!is.na(dclass)) %>% 
-    dplyr::arrange(sp, site, rep) %>% 
-    filter(sp == rare)
+  ds_data_final <- ds_data|>
+    dplyr::select(sp, site, rep, dclass, gs_obs)|>
+    dplyr::filter(!is.na(dclass))|>
+    dplyr::arrange(sp, site, rep)|>
+    dplyr::filter(sp == rare)
   
   data <- list(
     MIDPOINT = seq(from = 12.5, to = 987.5, by = 25),
@@ -296,12 +301,12 @@ sim_icm <- function(
     NG_START = ng_indices$ngobs_start,
     NG_END = ng_indices$ngobs_end)
   
-  sp_info <- ng_data %>% 
-    dplyr::group_by(sp) %>% 
-    dplyr::summarise(totDS = sum(N)) %>% 
-    dplyr::full_join(dplyr::summarise(dplyr::group_by(transect_counts, sp), totTC = sum(totalN))) %>% 
-    dplyr::full_join(sp_df) %>%
-    filter(sp == rare)
+  sp_info <- ng_data|>
+    dplyr::group_by(sp)|>
+    dplyr::summarise(totDS = sum(N))|>
+    dplyr::full_join(dplyr::summarise(dplyr::group_by(transect_counts, sp), totTC = sum(totalN)))|>
+    dplyr::full_join(sp_df) |>
+    dplyr::filter(sp == rare)
   
   return(list(data = data,
               constants = constants,
@@ -391,7 +396,7 @@ for( i in 1: nsimreps ) {
   params <- params_ssds
   
   start <- Sys.time()
-  cl <- makeCluster(nc)
+  cl <- parallel::makeCluster(nc)
   parallel::clusterExport(cl, c("model.code",
                                 "inits",
                                 "data_run",
@@ -405,59 +410,63 @@ for( i in 1: nsimreps ) {
     set.seed(j)
     init <- inits()
     set.seed(NULL)
-    clusterExport(cl[j], "init")
+    parallel::clusterExport(cl[j], "init")
   }
   
-  out <- clusterEvalQ(cl, {
+  out <- parallel::clusterEvalQ(cl, {
     library(nimble)
     library(coda)
     
-    model <- nimbleModel(code = model.code,
+    model <- nimble::nimbleModel(code = model.code,
                          name = "model.code",
                          constants = constants_run,
                          data = data_run,
                          inits = init)
     
-    Cmodel <- compileNimble(model)
-    modelConf <- configureMCMC(model)
-    modelConf$addMonitors(params)
-    modelMCMC <- buildMCMC(modelConf)
-    CmodelMCMC <- compileNimble(modelMCMC, project = model)
-    out1 <- runMCMC(CmodelMCMC,
+    Cmodel <- nimble::compileNimble(model)
+    modelConf <- nimble::configureMCMC(model)
+    modelConf$nimble::addMonitors(params)
+    modelMCMC <- nimble::buildMCMC(modelConf)
+    CmodelMCMC <- nimble::compileNimble(modelMCMC, project = model)
+    out1 <- nimble::runMCMC(CmodelMCMC,
                     nburnin = nburn,
                     niter = ni,
                     thin = nt)
     
-    return(as.mcmc(out1))
+    return(coda::as.mcmc(out1))
   })
   end <- Sys.time()
-  stopCluster(cl)
+  parallel::stopCluster(cl)
   
    outs[[i]] <- out
   
-  sp_info[[i]] <- simdat[[i]]$sp_info %>% 
+  sp_info[[i]] <- simdat[[i]]$sp_info |> 
     add_column(simrep = i)
   
-  alpha1_diff[[i]] <- MCMCpstr(out, params = "alpha1_diff", type = "chains" )[[1]] %>% 
-    as_tibble() %>% 
-    pivot_longer(1:ncol(.),
-                 names_to = "iter",
-                 values_to = "value") %>% 
-    mutate(iter = parse_number(iter)) %>% 
-    add_column(param = "alpha1_diff", 
-               simrep = i, 
-               sp = pull(simdat[[i]]$sp_info, sp)) %>% 
+  alpha1_diff[[i]] <- MCMCvis::MCMCpstr(out, params = "alpha1_diff", type = "chains" )[[1]] |> 
+    tibble::as_tibble(rownames = "sp") |> 
+    ( function(x) tidyr::pivot_longer(x,
+                                      2:ncol(x),
+                                      names_to = "iter",
+                                      values_to = "value"))() |> 
+    dplyr::mutate(sp = stringr::str_replace(sp, "alpha1_diff", "")) |> 
+    dplyr::mutate(sp = readr::parse_number(sp), 
+                  iter = readr::parse_number(iter)) |> 
+    tibble::add_column(param = "alpha1_diff", 
+                       simrep = i) |> 
     dplyr::select(simrep, sp, iter, param, value) 
 
-  N_RB_DS[[i]] <- MCMCpstr(out, params = "N_RB_DS", type = "chains" )[[1]] %>% 
-    as_tibble() %>% 
-    pivot_longer(1:ncol(.),
-                 names_to = "iter",
-                 values_to = "value") %>% 
-    mutate(iter = parse_number(iter)) %>% 
-    add_column(param = "N_RB_DS", 
-               simrep = i,
-               sp = pull(simdat[[i]]$sp_info, sp)) %>% 
+  N_RB_DS[[i]] <- MCMCvis::MCMCpstr(out, params = "N_RB_DS", type = "chains" )[[1]] |> 
+    tibble::as_tibble(rownames = "sp") |> 
+    ( function(x) tidyr::pivot_longer(x,
+                                      2:ncol(x),
+                                      names_to = "iter",
+                                      values_to = "value"))() |> 
+    dplyr::mutate(sp = stringr::str_replace(sp, "N_RB_DS", "")) |> 
+    dplyr::mutate(sp = readr::parse_number(sp), 
+                  iter = readr::parse_number(iter)) |> 
+    tibble::add_column(param = "N_RB_DS", 
+                       simrep = i) |> 
     dplyr::select(simrep, sp, iter, param, value) 
   
   rm(data_run, constants_run)
