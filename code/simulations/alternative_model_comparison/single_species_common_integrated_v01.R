@@ -7,6 +7,7 @@ library(parallel)
 library(tidyverse)
 library(extraDistr)
 library(MCMCvis)
+library(here)
 
 sim_icm <- function(
     nsp = 20,          # number of species

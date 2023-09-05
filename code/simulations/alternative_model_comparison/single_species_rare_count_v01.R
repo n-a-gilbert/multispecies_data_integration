@@ -2,12 +2,12 @@
 # Neil Gilbert
 # This script runs simulations for an single-species, count data only model for a rare species
 
-
 library(nimble)
 library(parallel)
 library(tidyverse)
 library(extraDistr)
 library(MCMCvis)
+library(here)
 
 sim_icm <- function(
     nsp = 20,          # number of species
