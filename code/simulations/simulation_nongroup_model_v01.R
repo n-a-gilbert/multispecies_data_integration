@@ -301,48 +301,34 @@ model.code <- nimble::nimbleCode({
   sd_alpha1 ~ dexp(1)
   
   for ( s in 1:N_SPECIES ) {
-    gamma0_ds[s] <- mu_gamma0_ds + sd_gamma0_ds*zgamma0_ds[s]
-    zgamma0_ds[s] ~ dnorm(0, sd = 1)
-    
-    gamma0_c[s] <- mu_gamma0_c + sd_gamma0_c*zgamma0_c[s]
-    zgamma0_c[s] ~ dnorm(0, sd = 1)
-    
+    gamma0_ds[s] ~ dnorm( mu_gamma0_ds, sd = sd_gamma0_ds )
+    gamma0_c[s] ~ dnorm( mu_gamma0_c, sd = sd_gamma0_c )
     omega_ds[s] <- exp( gamma0_ds[s] )
     omega_c[s] <- exp( gamma0_c[s] )
-    
-    alpha0[s] <- mu_alpha0 + sd_alpha0*zalpha0[s]
-    zalpha0[s] ~ dnorm(0, sd = 1)
-    
-    alpha1[s] <- mu_alpha1 + sd_alpha1*zalpha1[s]
-    zalpha1[s] ~ dnorm(0, sd = 1)
-    
+    alpha0[s] ~ dnorm( mu_alpha0, sd = sd_alpha0 )
+    alpha1[s] ~ dnorm( mu_alpha1, sd = sd_alpha1 )
     zeta[s] ~ dgamma(4, 2)    
-    
     pie_sp_ds[s] <- sum( pie_ds[1:N_BINS_DS, s] )
     for( k in 1:N_BINS_DS){
       log(g_ds[k, s]) <- -MIDPOINT_DS[k] * MIDPOINT_DS[k]/(2 * omega_ds[s] * omega_ds[s])
       pie_ds[k, s] <- g_ds[k,s] * (V_DS/B_DS)
       pie_cell_ds[k, s] <- pie_ds[k, s] / pie_sp_ds[s]
     }
-    
     pie_sp_c[s] <- sum(pie_c[1:N_BINS_C, s])
     for (k in 1:N_BINS_C ) {
       log(g_c[k,s]) <- -MIDPOINT_C[k] * MIDPOINT_C[k]/(2 * omega_c[s] * omega_c[s])
       pie_c[k,s] <- g_c[k,s] * (V_C/B_C)
     }
   }
-  
   for( i in 1:N_DS_N ) {
     log( lambda_ds[i] ) <- alpha0[ SP_DS_N[i]] + alpha1[ SP_DS_N[i]] * HAB_DS[i] 
     rho_ds[i] ~ dgamma( zeta[SP_DS_N[i]], zeta[SP_DS_N[i]] )
     N_DS[i] ~ dpois( lambda_ds[i] * rho_ds[i] )
     yN_DS[i] ~ dbin( pie_sp_ds[SP_DS_N[i]], N_DS[i] )
   }
-  
   for (i in 1:N_DS_D ) {
     DCLASS[i] ~ dcat(pie_cell_ds[1:N_BINS_DS, SP_DS_D[i] ] )
   }
-  
   for(i in 1:N_COUNTS) {
     log(lambda_c[i]) <- alpha0[SP_C[i]] + alpha1[ SP_C[i]] * HAB_C[i]
     rho_c[i] ~ dgamma(zeta[SP_C[i]], zeta[SP_C[i]])
@@ -393,17 +379,10 @@ make_inits <- function(data, constants){
   
   zeta_st <- rgamma(constants$N_SPECIES, 4, 2)
   
-  zalpha0_st <- rnorm(constants$N_SPECIES, 0, 0.5)
-  zalpha1_st <- rnorm(constants$N_SPECIES, 0, 0.5)
-  zgamma0_ds_st <- rnorm(constants$N_SPECIES, 0, 0.5)
-  zgamma0_c_st <- rnorm(constants$N_SPECIES, 0, 0.5)
-  
-  alpha0_st <- alpha1_st <-  gamma0_ds_st <- gamma0_c_st <- numeric(length = constants$N_SPECIES)
-  
-  gamma0_ds_st <- mu_gamma0_ds_st + sd_gamma0_ds_st*zgamma0_ds_st
-  gamma0_c_st <- mu_gamma0_c_st + sd_gamma0_c_st*zgamma0_c_st
-  alpha0_st <- mu_alpha0_st + sd_alpha0_st*zalpha0_st
-  alpha1_st <- mu_alpha1_st + sd_alpha1_st*zalpha1_st
+  alpha0_st <- rnorm( constants$N_SPECIES, mu_alpha0_st, sd_alpha0_st )
+  alpha1_st <- rnorm( constants$N_SPECIES, mu_alpha1_st, sd_alpha1_st )
+  gamma0_ds_st <- rnorm( constants$N_SPECIES, mu_gamma0_ds_st, sd_gamma0_ds_st )
+  gamma0_c_st <- rnorm( constants$N_SPECIES, mu_gamma0_c_st, sd_gamma0_c_st )
   
   inits <- list(
     mu_gamma0_ds = mu_gamma0_ds_st,
@@ -414,13 +393,9 @@ make_inits <- function(data, constants){
     sd_alpha0 = sd_alpha0_st,
     mu_alpha1 = mu_alpha1_st,
     sd_alpha1 = sd_alpha1_st,
-    zalpha0 = zalpha0_st,
-    zalpha1 = zalpha1_st,
     alpha0 = alpha0_st,
     alpha1 = alpha1_st,
-    zgamma0_ds = zgamma0_ds_st,
     gamma0_ds = gamma0_ds_st,
-    zgamma0_c = zgamma0_c_st,
     gamma0_c = gamma0_c_st,
     zeta = zeta_st,
     rho_ds = rgamma(constants$N_DS_N, 2, 2), 
