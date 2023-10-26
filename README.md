@@ -30,7 +30,6 @@ Integrated community models—an emerging framework in which multiple data sourc
       * [single_species_distance_sampling_rare_v01.R](./code/simulations/alternative_model_comparison/single_species_distance_sampling_rare_v01.R)  Single species (rare) distance sampling only model.
       * [single_species_integrated_common_v01.R](./code/simulations/alternative_model_comparison/single_species_integrated_common_v01.R)  Single species (rare) integrated model.
    * [main_simulation_v01.R](./code/simulations/main_simulation_v01.R)  Script to run the main simulation.
-   * [simulation_nongroup_model_v01.R](./code/simulations/simulation_nongroup_model_v01.R) Script to simulate data and run model for case when surveyed species do not travel in groups
 
 ### [data](./data): Contains data for case study
 * [Shapefiles](./data/Shapefiles)  Various shapefiles.
