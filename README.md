@@ -23,12 +23,12 @@ Integrated community models—an emerging framework in which multiple data sourc
    * [alternative_model_comparison](./code/simulations/alternative_model_comparison)  Folder containing scripts to run simulations for alternative single datastream / single-species models.
       * [community_count_v01.R](./code/simulations/alternative_model_comparison/community_count_v01.R)  Community count-only model.
       * [community_distance_sampling_v01.R](./code/simulations/alternative_model_comparison/community_distance_sampling_v01.R)  Community distance sampling-only model.
-      * [single_species_common_count_v01.R](./code/simulations/alternative_model_comparison/single_species_common_count_v01.R)  Single species (common) count only model.
-      * [single_species_common_distance_sampling_v01.R](./code/simulations/alternative_model_comparison/single_species_common_distance_sampling_v01.R)  Single species (common) distance sampling only model.
-      * [single_species_common_integrated_v01.R](./code/simulations/alternative_model_comparison/single_species_common_integrated_v01.R)  Single species (common) integrated model.
-      * [single_species_rare_count_v01.R](./code/simulations/alternative_model_comparison/single_species_rare_count_v01.R)  Single species (rare) count only model.
-      * [single_species_rare_distance_sampling_v01.R](./code/simulations/alternative_model_comparison/single_species_common_distance_sampling_v01.R)  Single species (rare) distance sampling only model.
-      * [single_species_rare_integrated_v01.R](./code/simulations/alternative_model_comparison/single_species_rare_integrated_v01.R)  Single species (rare) integrated model.
+      * [single_species_count_common_v01.R](./code/simulations/alternative_model_comparison/single_species_count_common_v01.R)  Single species (common) count only model.
+      * [single_species_distance_sampling_common_v01.R](./code/simulations/alternative_model_comparison/single_species_distance_sampling_common_v01.R)  Single species (common) distance sampling only model.
+      * [single_species_integrated_common_v01.R](./code/simulations/alternative_model_comparison/single_species_integrated_common_v01.R)  Single species (common) integrated model.
+      * [single_species_count_rare_v01.R](./code/simulations/alternative_model_comparison/single_species_count_rare_v01.R)  Single species (rare) count only model.
+      * [single_species_distance_sampling_rare_v01.R](./code/simulations/alternative_model_comparison/single_species_distance_sampling_rare_v01.R)  Single species (rare) distance sampling only model.
+      * [single_species_integrated_common_v01.R](./code/simulations/alternative_model_comparison/single_species_integrated_common_v01.R)  Single species (rare) integrated model.
    * [main_simulation_v01.R](./code/simulations/main_simulation_v01.R)  Script to run the main simulation.
    * [simulation_nongroup_model_v01.R](./code/simulations/simulation_nongroup_model_v01.R) Script to simulate data and run model for case when surveyed species do not travel in groups
 
