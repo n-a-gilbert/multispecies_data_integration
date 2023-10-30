@@ -21,7 +21,7 @@ ng_data <- final2 |>
   dplyr::arrange( sp, site, rep )
 
 setwd(here::here("results"))
-load("herbivore_case_study_results_v04.RData")
+load("herbivore_case_study_results_v01.RData")
 
 sp_key <- tibble::tibble(
   sp = 1:11, 
@@ -30,7 +30,7 @@ sp_key <- tibble::tibble(
                 "impala",  "Thomson's", "topi",
                 "warthog", "waterbuck" ) )
 
-N_DS <- MCMCvis::MCMCsummary(out, params = "N_ds") |> 
+N_DS <- MCMCvis::MCMCsummary(out, params = "N_DS") |> 
   tibble::as_tibble(rownames = "param") |> 
   tibble::add_column( sp = constants$SP_NG , 
                       site = ng_data$site , 
@@ -42,7 +42,7 @@ N_DS <- MCMCvis::MCMCsummary(out, params = "N_ds") |>
   dplyr::mutate( density_mean = mean / area,  # convert to density to aid comparison with count data
                  density_sd = sd / area )
 
-panela <- ggplot2::ggplot( N_DS, 
+( panela <- ggplot2::ggplot( N_DS, 
                            aes( y = site, x = rep, fill = log1p(density_mean))) +
   ggplot2::facet_wrap( ~sp_name ) +
   ggplot2::geom_tile(color = NA) + 
@@ -73,9 +73,9 @@ panela <- ggplot2::ggplot( N_DS,
                  legend.text = element_text(size = 8, color = "black")) +
   ggplot2::guides(fill = guide_colorbar(title.hjust = 0.75,
                                         ticks = FALSE,
-                                        barheight = 0.5))
+                                        barheight = 0.5)) )
 
-N_C <- MCMCvis::MCMCsummary(out, params = "N") |> 
+N_C <- MCMCvis::MCMCsummary(out, params = "N_TC") |> 
   tibble::as_tibble(rownames = "param") |> 
   tibble::add_column( sp = constants$SP_TC , 
                       site = transect_data$site , 
@@ -87,7 +87,7 @@ N_C <- MCMCvis::MCMCsummary(out, params = "N") |>
   dplyr::mutate( density_mean = mean / area, 
                  density_sd = sd / area )
 
-panelb <- ggplot2::ggplot( N_C, 
+( panelb <- ggplot2::ggplot( N_C, 
                            aes( y = site, x = rep, fill = log1p(density_mean))) +
   ggplot2::facet_wrap( ~sp_name ) +
   ggplot2::geom_tile(color = NA) + 
@@ -118,7 +118,7 @@ panelb <- ggplot2::ggplot( N_C,
                  legend.text = element_text(size = 8, color = "black")) +
   ggplot2::guides(fill = guide_colorbar(title.hjust = 0.75,
                                         ticks = FALSE,
-                                        barheight = 0.5))
+                                        barheight = 0.5)) )
 
 # posterior means
 mean_density <- panela + panelb + plot_layout(guides = "collect") &
@@ -128,7 +128,7 @@ mean_density <- panela + panelb + plot_layout(guides = "collect") &
 
 setwd(here::here("figures"))
 ggplot2::ggsave(
-  "figure_s4.png", 
+  "figure_s8.png", 
   mean_density, 
   width = 7, 
   height = 4, 
@@ -210,7 +210,7 @@ sd_density <- panela_sd + panelb_sd + plot_layout(guides = "collect") &
 
 setwd(here::here("figures"))
 ggplot2::ggsave(
-  "figure_s5.png", 
+  "figure_s9.png", 
   sd_density, 
   width = 7, 
   height = 4, 
