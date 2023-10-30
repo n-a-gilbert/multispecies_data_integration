@@ -75,20 +75,36 @@ Integrated community models—an emerging framework in which multiple data sourc
 
 ### [figures](./figures) Contains figures, and code to create them.
 * [code_for_figures](./figures/code_for_figures)  Folder with scripts to create figures.
-   * [figure_02_03.R](./figures/code_for_figures/figure_02_03.R)  Create Figures 2-3, plus Tables S2-S3.
-   * [figure_04.R](./figures/code_for_figures/figure_04.R)  Code for Figure 4 (differences between regions).
+   * [figure_02.R](./figures/code_for_figures/figure_02.R)  Create Figure 2 (simulation - distribution of bias)
+   * [figure_03.R](./figures/code_for_figures/figure_03.R)  Create Figure 3 (simulation - boxplots comparing models)
+   * [figure_04.R](./figures/code_for_figures/figure_04.R)  Create Figure 4 (case study - region differences)
    * [figure_s1_s2.R](./figures/code_for_figures/figure_s1_s2.R)  Plot simulated community example. 
-   * [figure_s3.R](./figures/code_for_figures/figure_s3.R)  Make study area map.
-   * [figure_s4_s5.R](./figures/code_for_figures/figure_s4_s5.R)  Create Figs. S4-S5.
-* [figure_01.png](./figures/figure_01.png)  Figure 1. Conceptual overview of model.
+   * [figure_s3.R](./figures/code_for_figures/figure_s3.R)  Prior predictive check for scale parameter intercept
+   * [figure_s4.R](./figures/code_for_figures/figure_s4.R)  Make study area map for case study
+   * [figure_s6.R](./figures/code_for_figures/figure_s6.R)  Create Figure S6
+   * [figure_s7.R](./figures/code_for_figures/figure_s7.R)  Create Figure S7
+   * [figure_s8_s9.R](./figures/code_for_figures/figure_s8_s9.R)  Create Figures S8 & S9
+   * [table_s2.R](./figures/code_for_figures/table_s2.R)  Create Table S2 (relative bias)
+   * [table_s3.R](./figures/code_for_figures/table_s3.R)  Create Table S3 (absolute bias)
+   * [table_s4.R](./figures/code_for_figures/table_s4.R)  Create Table S4 (precision)
+   * [table_s5.R](./figures/code_for_figures/table_s5.R)  Create Table S5 (convergence)
+* [figure_01.png](./figures/figure_01.png)  Figure 1. Conceptual overview of model. (PNG)
+* [figure_01.pptx](./figures/figure_01.pptx)  Figure 1. Conceptual overview of model. (PPT)
 * [figure_02.png](./figures/figure_02.png)  Figure 2. Main simulation results.
 * [figure_03.png](./figures/figure_03.png)  Figure 3. Simulation - comparison to alternative models.
 * [figure_04.png](./figures/figure_04.png)  Figure 4. Case study results.
+* [figure_04.pptx](./figures/figure_04.pptx)  Figure 4. Case study results. (PPT file for annotation)
 * [figure_s1.png](./figures/figure_s1.png)  Figure S1. Simulated covariate effect.
 * [figure_s2.png](./figures/figure_s2.png)  Figure S2. Simulated detection function.
-* [figure_s3.png](./figures/figure_s3.png)  Figure S3. Case study map.
-* [figure_s4.png](./figures/figure_s4.png)  Figure S4. Case study: transect-level density estimates (posterior mean).
-* [figure_s5.png](./figures/figure_s5.png)  Figure S5. Case study: transect-level density estimate uncertainty (posterior standard deviation).
+* [figure_s3.png](./figures/figure_s3.png)  Figure S3. Prior predictive check
+* [figure_s4.png](./figures/figure_s4.png)  Figure S4. Case study map.
+* [figure_s5.png](./figures/figure_s5.png)  Figure S5. Updated DAG for case study (PNG)
+* [figure_s5.pptx](./figures/figure_s5.pptx)  Figure S5. Updated DAG for case study (PPT)
+* [figure_s6.png](./figures/figure_s6.png)  Figure S6. Rank relative bias figure
+* [figure_s7.png](./figures/figure_s7.png)  Figure S7. Rank precision figure
+* [figure_s8.png](./figures/figure_s8.png)  Figure S8. Case study: transect-level density estimates (posterior mean).
+* [figure_s9.png](./figures/figure_s9.png)  Figure S9. Case study: transect-level density estimate uncertainty (posterior standard deviation).
+* [figures_s8_s9.pptx](./figures/figures_s8_s9.pptx) PPT file to annotate Figures S8 and S9
 
 ### [results](./results) Contains results files.
 * [herbivore_case_study_results_v04.RData](./resultsherbivore_case_study_results_v04.RData)  Model output for Mara herbivores case study. This .RData contains 4 objects
