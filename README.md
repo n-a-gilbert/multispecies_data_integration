@@ -144,74 +144,18 @@ Integrated community models—an emerging framework in which multiple data sourc
   * **out**. A list of the MCMC chains with the posterior samples for model parameters.
   * **model.code**. Code for the Nimble model.
 
-* [main_simulation_results_v01.RData](./results/main_simulation_results_v01.RData)  Summarized results from main simulation. This .RData file contains 4 dataframes:
-  * **icm_a1**. This summarizes model estimates of a covariate effect:
+* [cc.RData](./results/cc.RData) Simulation results for community count-only model. This .RData contains one dataframe named cc, with the following variables:
 
     | Variable name | Meaning |
     |---------------|---------|
-    | simrep | Which replicate simulation (1 through 100) |
-    | sp | Species id |
-    | mean | Posterior mean of difference between estimate and true value |
-    | sd | Posterior standard deviation of difference between estimate and true value |
-    | l95 | Lower bound of 95% credible interval of difference between estimate and true value |
-    | u95 | Upper bound of 95% credible interval of difference between estimate and true value |
-    | contain0 | Does the 95% credible interval of the difference between the estimate and true value contain 0? |
-    | nsites_tc_fact | Which relative data amount scenario? 1 = same number of distance sampling and count transects, 4 = 4x more count transects |
-    | p_bias | Which relative detectability scenario?  -1 = count detectability 10% lower, 0 = same detectability |
-    
-  * **icm_info**. True values of parameters used to simulate data:
-
-    | Variable name | Meaning |
-    |---------------|---------|
-    | sp | Species id |
-    | totDS | Total number of individuals at distance sampling sites |
-    | totTC | Total number of individuals at count sites |
-    | alpha0 | Number-of-groups intercept |
-    | alpha1 | Effect of covariate on number-of-groups |
-    | beta0 | Group size intercept |
-    | gamma0 | Intercept for scale parameter in detection function |
-    | zeta | Hyperparameter for number-of-group overdispersion |
-    | xi | Hyperparameter for group size overdispersion |
-    | simrep | Which replicate simulation (1 through 100) |
-    
-  * **icm_n_ds_rb**. Relative bias of estimated abundance underlying distance sampling data:
-
-    | Variable name | Meaning |
-    |---------------|---------|
-    | simrep | Which replicate simulation (1 through 100) |
-    | sp | Species id |
-    | mean | Posterior mean of relative bias |
-    | sd | Posterior sd of relative bias |
-    | l95 | Lower bound of 95% credible interval for relative bias |
-    | u95 | Upper bound of 95% credible interval for relative bias |
-    | contain0 | Does the 95% credible interval for relative bias contain 0 (no bias) |
-    | nsites_tc_fact | Which relative data amount scenario? 1 = same number of distance sampling and count transects, 4 = 4x more count transects |
-    | p_bias | Which relative detectability scenario?  -1 = count detectability 10% lower, 0 = same detectability |
-
-  * **icm_n_tc_rb**. Relative bias of estimated abundance underlying count data. Same variable definitions as above.   
-* [simulation_alternative_model_results_v01.RData](./results/simulation_alternative_model_results_v01.RData)  Summarised results for alternative model simulations. This .RData file contains 3 data frames:
-  * **alpha1_truth_minus_estimate**. Summarises estimates of covariate effect on the number-of-groups:
-
-    | Variable name | Meaning |
-    |---------------|---------|
-    | model | Which model (CC = community count only, CDS = community distance sampling only, ISS = integrated single species, SSC = single species count, SSDS = single species distance sampling) |
-    | species | Which species class - pulled out representative rare and common species from each simrep |
-    | mean | Posterior mean of the difference between the true and estimated value for covariate effect |
-    | sd | Posterior standard deviation of the difference between the true and estimated value for covariate effect |
-    | l95 | Lower bound of the 95% credible interval for the difference between the true and estimated value for covariate effect |
-    | u95 | Upper bound of the 95% credible interval for the difference between the true and estimated value for covariate effect |
-    | contain0 | Does the 95% credible interval of the difference between the true and estimated value for covariate effect include 0 (unbiased) |
-
-  * **count_abundance_rb**. Summarizes the relative bias of abundance at the count sites:
-
-    | Variable name | Meaning |
-    |---------------|---------|
-    | model |  Which model (CC = community count only, CDS = community distance sampling only, ISS = integrated single species, SSC = single species count, SSDS = single species distance sampling) |
-    | species | Which species class - pulled out representative rare and common species from each simrep |
-    | mean | Posterior mean of the relative bias of the abundance estimates for the count sites |
-    | sd | Posterior standard deviation of the relative bias of the abundance estimates for the count sites |
-    | l95 | Lower bound of the 95% credible interval for the relative bias of the abundance estimates for the count sites  |
-    | u95 | Upper bound of the 95% credible interval for the relative bias of the abundance estimates for the count sites |
-    | contain0 | Does the 95% credible interval for relative bias include 0 (unbiased) |
-
-  * **ds_abundance_rb**. Summarizes the relative bias of abundance at the distance sampling sites. Same variables & definitions as above.
+    | model | Model identifier, here "cc" (for count community) |
+    | simrep | Replicate simulation |
+    | param | Name of parameter |
+    | sp | Species identifier |
+    | nobs | Total number of individuals for that species counted across sites |
+    | truth | True value of parameter |
+    | mean | Posterior mean of parameter estimate |
+    | sd | Posterior standard deviation of parameter estimate |
+    | 2.5% | Lower bound of 95% credible interval for estimate |
+    | 97.5% | Upper bound of 95% credible interval for estimate |
+    | Rhat | Convergence diagnostic for parameter |
