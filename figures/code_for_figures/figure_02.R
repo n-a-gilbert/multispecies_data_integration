@@ -4,10 +4,9 @@ library(MetBrewer)
 
 setwd(here::here("results"))
 
-ic <- readr::read_csv("ic_simulation.csv")
+load("ic.RData")
 
 ic_clean <- ic |> 
-  tidyr::separate(param, into = c("param", "junk"), sep = "\\[") |> 
   dplyr::mutate(diff = mean - truth)
 
 rb_label <- ic_clean |> 
