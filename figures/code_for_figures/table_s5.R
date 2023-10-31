@@ -1,75 +1,82 @@
 # 24 October 2023
 # Create convergence summary table for ICM and alternative models
-
 library(here)
 library(tidyverse)
+library(MetBrewer)
 library(officer)
 library(flextable)
 library(magrittr)
 
 setwd(here::here("results"))
 
-ic <- readr::read_csv("ic_simulation.csv") |> 
-  tidyr::separate(param, into = c("param", "junk"), sep = "\\[") |> 
-  dplyr::select(simrep, param, sp, truth:Rhat) |> 
-  tibble::add_column(model = "ic")
+load("ic.RData")
+ic <- ic |> 
+  dplyr::filter( (nobs > 1 & ndist > 1) | is.na(nobs)) |> 
+  dplyr::group_by(simrep) |> 
+  dplyr::mutate(min_num_obs = min(nobs, na.rm = TRUE),
+                max_num_obs = max(nobs, na.rm = TRUE)) |> 
+  dplyr::filter(nobs == min_num_obs | nobs == max_num_obs | is.na(nobs)) |> 
+  dplyr::mutate( type = ifelse(nobs == min_num_obs, "rare", 
+                               ifelse(nobs == max_num_obs, "common", NA)),
+                 nsp = length(unique(sp))) |> 
+  dplyr::group_by(simrep, type) |> 
+  dplyr::mutate(first_sp = first(sp)) |> 
+  dplyr::filter( sp == first_sp | is.na(first_sp)) |> 
+  tibble::add_column(model = "ic") |> 
+  dplyr::select(model, simrep, param, type, truth, mean, sd, `2.5%`, `97.5%`, Rhat) 
 
-dc <- readr::read_csv("dc_simulation.csv") |> 
+load("dc.RData")
+dc <- dc |>   
+  dplyr::filter( (nobs > 1 & ndist > 1) | is.na(nobs)) |> 
+  dplyr::group_by(simrep) |> 
+  dplyr::mutate(min_num_obs = min(nobs, na.rm = TRUE),
+                max_num_obs = max(nobs, na.rm = TRUE)) |> 
+  dplyr::filter(nobs == min_num_obs | nobs == max_num_obs | is.na(nobs)) |> 
+  dplyr::mutate( type = ifelse(nobs == min_num_obs, "rare", 
+                               ifelse(nobs == max_num_obs, "common", NA))) |> 
+  dplyr::group_by(simrep, type) |> 
+  dplyr::mutate(first_sp = first(sp)) |> 
+  dplyr::filter( sp == first_sp | is.na(first_sp)) |> 
   dplyr::filter(!is.na(mean)) |> 
-  tidyr::separate(param, into = c("param", "junk"), sep = "\\[") |> 
-  dplyr::select(simrep, param, sp, truth:Rhat) |> 
-  tibble::add_column(model = "dc")
+  dplyr::select(model, simrep, param, type, truth, mean, sd, `2.5%`, `97.5%`, Rhat) 
 
-cc <- readr::read_csv("cc_simulation.csv") |> 
+load("cc.RData")
+cc <- cc |> 
+  dplyr::group_by(simrep) |> 
+  dplyr::mutate(min_num_obs = min(nobs, na.rm = TRUE), 
+                max_num_obs = max(nobs, na.rm = TRUE)) |> 
+  dplyr::filter(nobs == min_num_obs | nobs == max_num_obs | is.na(nobs)) |> 
+  dplyr::mutate(type = ifelse(nobs == min_num_obs, "rare", 
+                              ifelse(nobs == max_num_obs, "common", NA))) |> 
+  dplyr::group_by(simrep, type) |> 
+  dplyr::mutate(first_sp = first(sp)) |> 
+  dplyr::filter(sp == first_sp | is.na(first_sp)) |> 
   dplyr::filter(!is.na(mean)) |> 
-  tidyr::separate(param, into = c("param", "junk"), sep = "\\[") |> 
-  dplyr::select(simrep, param, sp, truth:Rhat) |> 
-  tibble::add_column(model = "cc")
+  dplyr::select(model, simrep, param, type, truth, mean, sd, `2.5%`, `97.5%`, Rhat)
 
-isr <- readr::read_csv("isr_simulation.csv") |> 
-  dplyr::filter(!is.na(mean)) |> 
-  tidyr::separate(param, into = c("param", "junk"), sep = "\\[") |> 
-  dplyr::select(simrep, param, sp, truth:Rhat) |> 
-  tibble::add_column(model = "isr")
+load("is.RData")
+is <- is |> 
+  dplyr::mutate(type = ifelse(model == "isr", "rare", "common")) |>
+  dplyr::select(model, simrep, param, type, truth, mean, sd, `2.5%`, `97.5%`, Rhat) |> 
+  dplyr::filter(!is.na(mean))
 
-isc <- readr::read_csv("isc_simulation.csv") |> 
-  dplyr::filter(!is.na(mean)) |> 
-  tidyr::separate(param, into = c("param", "junk"), sep = "\\[") |> 
-  dplyr::select(simrep, param, sp, truth:Rhat) |> 
-  tibble::add_column(model = "isc")
+load("ds.RData")
+ds <- ds |> 
+  dplyr::mutate(type = ifelse(model == "dsr", "rare", "common")) |>
+  dplyr::select(model, simrep, param, type, truth, mean, sd, `2.5%`, `97.5%`, Rhat) |> 
+  dplyr::filter(!is.na(mean)) 
 
-dsr <- readr::read_csv("dsr_simulation.csv") |> 
-  dplyr::filter(!is.na(mean)) |> 
-  tidyr::separate(param, into = c("param", "junk"), sep = "\\[") |> 
-  dplyr::select(simrep, param, sp, truth:Rhat) |> 
-  tibble::add_column(model = "dsr")
-
-dsc <- readr::read_csv("dsc_simulation.csv") |> 
-  dplyr::filter(!is.na(mean)) |> 
-  tidyr::separate(param, into = c("param", "junk"), sep = "\\[") |> 
-  dplyr::select(simrep, param, sp, truth:Rhat) |> 
-  tibble::add_column(model = "dsc")
-
-csr <- readr::read_csv("csr_simulation.csv") |> 
-  dplyr::filter(!is.na(mean)) |> 
-  tidyr::separate(param, into = c("param", "junk"), sep = "\\[") |> 
-  dplyr::select(simrep, param, sp, truth:Rhat) |> 
-  tibble::add_column(model = "csr")
-
-csc <- readr::read_csv("csc_simulation.csv") |> 
-  dplyr::filter(!is.na(mean)) |> 
-  tidyr::separate(param, into = c("param", "junk"), sep = "\\[") |> 
-  dplyr::select(simrep, param, sp, truth:Rhat) |> 
-  tibble::add_column(model = "csc")
+load("cs.RData")
+cs <- cs  |> 
+  dplyr::mutate(type = ifelse(model == "csr", "rare", "common")) |>
+  dplyr::select(model, simrep, param, type, truth, mean, sd, `2.5%`, `97.5%`, Rhat) |> 
+  dplyr::filter(!is.na(mean)) 
 
 all <- dplyr::full_join(ic, dc) |> 
   dplyr::full_join(cc) |> 
-  dplyr::full_join(isr) |> 
-  dplyr::full_join(isc) |> 
-  dplyr::full_join(dsr) |> 
-  dplyr::full_join(dsc) |> 
-  dplyr::full_join(csr) |> 
-  dplyr::full_join(csc)
+  dplyr::full_join(is) |> 
+  dplyr::full_join(ds) |> 
+  dplyr::full_join(cs) 
 
 convergence_table <- all |> 
   dplyr::mutate(Rhat = ifelse(is.na(Rhat), 10, Rhat)) |> # give Rhats with NA (unconverged) an arbitrarily large number
