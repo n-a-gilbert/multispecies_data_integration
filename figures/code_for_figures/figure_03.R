@@ -4,103 +4,77 @@ library(MetBrewer)
 
 setwd(here::here("results"))
 
-ic <- readr::read_csv("ic_simulation.csv") |> 
-  dplyr::filter( (totDS_obs > 1 & ndistances > 1) | is.na(totDS_obs)) |> 
+load("ic.RData")
+ic <- ic |> 
+  dplyr::filter( (nobs > 1 & ndist > 1) | is.na(nobs)) |> 
   dplyr::group_by(simrep) |> 
-  dplyr::mutate(min_num_obs = min(totDS_obs, na.rm = TRUE),
-                max_num_obs = max(totDS_obs, na.rm = TRUE)) |> 
-  dplyr::filter(totDS_obs == min_num_obs | totDS_obs == max_num_obs | is.na(totDS_obs)) |> 
-  dplyr::mutate( type = ifelse(totDS_obs == min_num_obs, "rare", 
-                               ifelse(totDS_obs == max_num_obs, "common", NA)),
+  dplyr::mutate(min_num_obs = min(nobs, na.rm = TRUE),
+                max_num_obs = max(nobs, na.rm = TRUE)) |> 
+  dplyr::filter(nobs == min_num_obs | nobs == max_num_obs | is.na(nobs)) |> 
+  dplyr::mutate( type = ifelse(nobs == min_num_obs, "rare", 
+                               ifelse(nobs == max_num_obs, "common", NA)),
                  nsp = length(unique(sp))) |> 
   dplyr::group_by(simrep, type) |> 
   dplyr::mutate(first_sp = first(sp)) |> 
   dplyr::filter( sp == first_sp | is.na(first_sp)) |> 
-  tidyr::separate(param, into = c("param", "junk"), sep = "\\[") |> 
-  dplyr::select(param, type, truth, mean, sd, `2.5%`, `97.5%`) |> 
-  tibble::add_column(model = "ic")
+  tibble::add_column(model = "ic") |> 
+  dplyr::select(model, simrep, param, type, truth, mean, `2.5%`, `97.5%`) 
 
-dc <- readr::read_csv("dc_simulation.csv") |>  
-  dplyr::filter( (totDS_obs > 1 & ndistances > 1) | is.na(totDS_obs)) |> 
+load("dc.RData")
+dc <- dc |>   
+  dplyr::filter( (nobs > 1 & ndist > 1) | is.na(nobs)) |> 
   dplyr::group_by(simrep) |> 
-  dplyr::mutate(min_num_obs = min(totDS_obs, na.rm = TRUE),
-                max_num_obs = max(totDS_obs, na.rm = TRUE)) |> 
-  dplyr::filter(totDS_obs == min_num_obs | totDS_obs == max_num_obs | is.na(totDS_obs)) |> 
-  dplyr::mutate( type = ifelse(totDS_obs == min_num_obs, "rare", 
-                               ifelse(totDS_obs == max_num_obs, "common", NA))) |> 
+  dplyr::mutate(min_num_obs = min(nobs, na.rm = TRUE),
+                max_num_obs = max(nobs, na.rm = TRUE)) |> 
+  dplyr::filter(nobs == min_num_obs | nobs == max_num_obs | is.na(nobs)) |> 
+  dplyr::mutate( type = ifelse(nobs == min_num_obs, "rare", 
+                               ifelse(nobs == max_num_obs, "common", NA))) |> 
   dplyr::group_by(simrep, type) |> 
   dplyr::mutate(first_sp = first(sp)) |> 
   dplyr::filter( sp == first_sp | is.na(first_sp)) |> 
-  tidyr::separate(param, into = c("param", "junk"), sep = "\\[") |> 
-  dplyr::select(param, type, truth, mean, sd, `2.5%`, `97.5%`) |> 
   dplyr::filter(!is.na(mean)) |> 
-  tibble::add_column(model = "dc")
+  dplyr::select(model, simrep, param, type, truth, mean, `2.5%`, `97.5%`) 
 
-cc <- readr::read_csv("cc_simulation.csv") |> 
+load("cc.RData")
+cc <- cc |> 
   dplyr::group_by(simrep) |> 
-  dplyr::mutate(min_num_obs = min(num_obs, na.rm = TRUE), 
-                max_num_obs = max(num_obs, na.rm = TRUE)) |> 
-  dplyr::filter(num_obs == min_num_obs | num_obs == max_num_obs | is.na(num_obs)) |> 
-  dplyr::mutate(type = ifelse(num_obs == min_num_obs, "rare", 
-                              ifelse(num_obs == max_num_obs, "common", NA))) |> 
+  dplyr::mutate(min_num_obs = min(nobs, na.rm = TRUE), 
+                max_num_obs = max(nobs, na.rm = TRUE)) |> 
+  dplyr::filter(nobs == min_num_obs | nobs == max_num_obs | is.na(nobs)) |> 
+  dplyr::mutate(type = ifelse(nobs == min_num_obs, "rare", 
+                              ifelse(nobs == max_num_obs, "common", NA))) |> 
   dplyr::group_by(simrep, type) |> 
   dplyr::mutate(first_sp = first(sp)) |> 
   dplyr::filter(sp == first_sp | is.na(first_sp)) |> 
-  tidyr::separate(param, into = c("param", "junk"), sep = "\\[") |> 
-  dplyr::select(param, type, truth, mean, sd, `2.5%`, `97.5%`) |> 
   dplyr::filter(!is.na(mean)) |> 
-  tibble::add_column(model = "cc")
+  dplyr::select(model, simrep, param, type, truth, mean, `2.5%`, `97.5%`)
 
-isr <- readr::read_csv("isr_simulation.csv") |> 
-  tibble::add_column(type = "rare") |>
-  tidyr::separate(param, into = c("param", "junk"), sep = "\\[") |> 
-  dplyr::select(param, type, truth, mean, sd, `2.5%`, `97.5%`) |> 
-  dplyr::filter(!is.na(mean)) |> 
-  tibble::add_column(model = "is")
+load("is.RData")
+is <- is |>
+  dplyr::mutate(type = ifelse(model == "isr", "rare",
+                              ifelse(model == "isc", "common", NA))) |> 
+  dplyr::select(model, simrep, param, type, truth, mean, `2.5%`, `97.5%`) |> 
+  dplyr::filter(!is.na(mean)) 
 
-isc <- readr::read_csv("isc_simulation.csv") |> 
-  tibble::add_column(type = "common") |>
-  tidyr::separate(param, into = c("param", "junk"), sep = "\\[") |> 
-  dplyr::select(param, type, truth, mean, sd, `2.5%`, `97.5%`) |> 
-  dplyr::filter(!is.na(mean)) |> 
-  tibble::add_column(model = "is")
+load("ds.RData")
+ds <- ds |> 
+  dplyr::mutate(type = ifelse(model == "dsr", "rare",
+                              ifelse(model == "dsc", "common", NA))) |> 
+  dplyr::select(model, simrep, param, type, truth, mean, `2.5%`, `97.5%`) |> 
+  dplyr::filter(!is.na(mean)) 
 
-dsr <- readr::read_csv("dsr_simulation.csv") |> 
-  tibble::add_column(type = "rare") |> 
-  tidyr::separate(param, into = c("param", "junk"), sep = "\\[") |> 
-  dplyr::select(param, type, truth, mean, sd, `2.5%`, `97.5%`) |> 
-  dplyr::filter(!is.na(mean)) |> 
-  tibble::add_column(model = "ds")
-
-dsc <- readr::read_csv("dsc_simulation.csv") |> 
-  tibble::add_column(type = "common") |> 
-  tidyr::separate(param, into = c("param", "junk"), sep = "\\[") |> 
-  dplyr::select(param, type, truth, mean, sd, `2.5%`, `97.5%`) |> 
-  dplyr::filter(!is.na(mean)) |> 
-  tibble::add_column(model = "ds")
-
-csr <- readr::read_csv("csr_simulation.csv") |> 
-  tibble::add_column(type = "rare") |> 
-  tidyr::separate(param, into = c("param", "junk"), sep = "\\[") |> 
-  dplyr::select(param, type, truth, mean, sd, `2.5%`, `97.5%`) |> 
-  dplyr::filter(!is.na(mean)) |> 
-  tibble::add_column(model = "cs")
-
-csc <- readr::read_csv("csc_simulation.csv") |> 
-  tibble::add_column(type = "common") |> 
-  tidyr::separate(param, into = c("param", "junk"), sep = "\\[") |> 
-  dplyr::select(param, type, truth, mean, sd, `2.5%`, `97.5%`) |> 
-  dplyr::filter(!is.na(mean)) |> 
-  tibble::add_column(model = "cs")
+load("cs.RData")
+cs <- cs  |> 
+  dplyr::mutate(type = ifelse(model == "csr", "rare",
+                              ifelse(model == "csc", "common", NA))) |>
+  dplyr::select(model, simrep, param, type, truth, mean, `2.5%`, `97.5%`) |> 
+  dplyr::filter(!is.na(mean)) 
 
 all <- dplyr::full_join(ic, dc) |> 
   dplyr::full_join(cc) |> 
-  dplyr::full_join(isr) |> 
-  dplyr::full_join(isc) |> 
-  dplyr::full_join(dsr) |> 
-  dplyr::full_join(dsc) |> 
-  dplyr::full_join(csr) |> 
-  dplyr::full_join(csc)
+  dplyr::full_join(is) |> 
+  dplyr::full_join(ds) |> 
+  dplyr::full_join(cs) 
 
 all |> 
   dplyr::filter(param %in% c(
@@ -120,12 +94,15 @@ all |>
     "Abundance covariate coefficient",
     "Detection intercept (distance sampling)",
     "Detection intercept (counts)"))) |> 
-  dplyr::mutate( model_name = ifelse( model == "cs", "Single species, counts",
-                                      ifelse(model == "ds", "Single species, distance sampling",
-                                             ifelse(model == "is", "Single species, integrated", 
-                                                    ifelse( model == "cc", "Community, counts", 
-                                                            ifelse(model == "dc", "Community, distance sampling", 
-                                                                   ifelse(model == "ic", "Community, integrated", NA))))))) |> 
+  dplyr::mutate( model_name = ifelse( model == "csr", "Single species, counts",
+                                      ifelse( model == "csc", "Single species, counts",
+                                              ifelse(model == "dsr", "Single species, distance sampling",
+                                                     ifelse(model == "dsc", "Single species, distance sampling",
+                                                            ifelse(model == "isc", "Single species, integrated", 
+                                                                   ifelse(model == "isr", "Single species, integrated",
+                                                                          ifelse( model == "cc", "Community, counts", 
+                                                                                  ifelse(model == "dc", "Community, distance sampling", 
+                                                                                         ifelse(model == "ic", "Community, integrated", NA)))))))))) |> 
   
   dplyr::mutate( model_name = factor(model_name, 
                                      levels = c(
