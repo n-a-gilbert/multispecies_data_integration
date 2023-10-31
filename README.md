@@ -107,7 +107,7 @@ Integrated community models—an emerging framework in which multiple data sourc
 * [figures_s8_s9.pptx](./figures/figures_s8_s9.pptx) PPT file to annotate Figures S8 and S9
 
 ### [results](./results) Contains results files.
-* [herbivore_case_study_results_v01.RData](./resultsherbivore_case_study_results_v01.RData)  Model output for Mara herbivores case study. This .RData contains 4 objects
+* [herbivore_case_study_results_v01.RData](./results/herbivore_case_study_results_v01.RData)  Model output for Mara herbivores case study. This .RData contains 4 objects
   * **constants**. A list of constants used in Nimble model:
 
     | Variable name | Meaning |
