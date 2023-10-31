@@ -107,21 +107,23 @@ Integrated community models—an emerging framework in which multiple data sourc
 * [figures_s8_s9.pptx](./figures/figures_s8_s9.pptx) PPT file to annotate Figures S8 and S9
 
 ### [results](./results) Contains results files.
-* [herbivore_case_study_results_v04.RData](./resultsherbivore_case_study_results_v04.RData)  Model output for Mara herbivores case study. This .RData contains 4 objects
+* [herbivore_case_study_results_v01.RData](./resultsherbivore_case_study_results_v01.RData)  Model output for Mara herbivores case study. This .RData contains 4 objects
   * **constants**. A list of constants used in Nimble model:
 
     | Variable name | Meaning |
     |---------------|---------|
     | NSPECIES | Number of species |
-    | NBINS | Number of distance bins |
+    | NBINS | Number of distance bins (distance sampling data) |
+    | NBINS_C | Number of distance bins for latent detection function for count data |
     | NDISTANCES | Number of distance observations |
     | NSURVEYS | Number of distance sampling surveys |
     | NCOUNTS | Number of count surveys |
-    | SP_GS | Species index for the group size data |
-    | SP_NG | Species index for the number-of-group data |
+    | SP_GS | Species index for the distance data |
+    | SP_NG | Species index for the abundance data (distance sampling) |
     | SP_TC | Species index for the count data |
-    | REGION_GS | Region index for the group size data |
-    | REGION_NG | Region index for the number-of-group data |
+    | REGION_NG | Region index for the abundance data |
+    | REGION_TC | Regon index for the count data |
+    | REGION_GS | Region index for the distance data |
     | NREGION | Number of regions |
 
   * **data**. A list of data used in the Nimble model:
@@ -129,14 +131,12 @@ Integrated community models—an emerging framework in which multiple data sourc
     | Variable name | Meaning |
     |---------------|---------|
     | MIDPOINT | Distance to the midpoint of each distance bin |
-    | yGS | Observed group sizes |
     | DCLASS | Observed distance class |
     | B_DS | Maximum distance to which animals are counted for distance sampling |
     | B_TC | Maximum distance to which animals are counted for counts |
     | V | Width of distance bins
-    | yNG | Observed number of groups (distance sampling) |
-    | yN_DS | Observed total number of animals (distance sampling |
-    | yN | Observed total number of animals (counts) |
+    | yN_DS | Observed count of animals (distance sampling |
+    | yN_TC | Observed count of animals (counts) |
     | OFFSET_DS | Area offset for distance sampling transects |
     | OFFSET_TC | Area offset for count transects |
     | MASS | Body mass of each species |
