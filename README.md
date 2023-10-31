@@ -159,3 +159,9 @@ Integrated community models—an emerging framework in which multiple data sourc
     | 2.5% | Lower bound of 95% credible interval for estimate |
     | 97.5% | Upper bound of 95% credible interval for estimate |
     | Rhat | Convergence diagnostic for parameter |
+
+* [dc.RData](./results/dc.RData) Simulation results for community distance-sampling-only model. This .RData contains one dataframe named dc, which has the same variable names as cc (see above)
+* [ic.RData](./results/ic.RData) Simulation results for community integrated model. This .RData contains one dataframe named ic, which has the same variable names as cc (see above)
+* [cs.RData](./results/cs.RData) Simulation results for single-species count-only model. This .RData contains one dataframe named cs, which has the same variable names as cc (see above)
+* [ds.RData](./results/ds.RData) Simulation results for single-species distance-sampling-only model. This .RData contains one dataframe named ds, which has the same variable names as cc (see above)
+* [is.RData](./results/is.RData) Simulation results for single-species integrated model. This .RData contains one dataframe named is, which has the same variable names as cc (see above)
