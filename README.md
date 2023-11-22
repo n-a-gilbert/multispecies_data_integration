@@ -9,7 +9,9 @@ ________________________________________________________________________________
 
 ## Abstract
 
-Integrated community models—an emerging framework in which multiple data sources for multiple species are analyzed simultaneously—offer opportunities to expand inferences beyond the single-species and single-data source approaches common in ecology. We developed a novel integrated community model combining distance sampling and single-visit count data; within the model, information is shared among data sources (via a joint likelihood) and species (via a random effects structure) to estimate abundance patterns across a community. Simulations showed that the integrated community model produced more precise estimates of ecological quantities such as covariate effects than alternative single-species and single-data source models. The model provided unbiased estimates of abundance—even for locations with single-visit count data that contain no information about the observation process—assuming comparable detection probabilities between data sources. When detection probabilities for simulated count data were different from distance sampling, however, abundance estimates were systematically biased. We applied the model to datasets on 11 herbivore species from the Masai Mara National Reserve, Kenya, and found considerable interspecific variation in response to local wildlife management practices: four species showed higher abundances in a region with passive conservation enforcement, four species showed higher abundances in a region with active conservation enforcement, and the remaining three species showed no abundance differences between the two regions. Furthermore, given the hierarchical structure of the model, we identified several species that showed between-region differences in group size and number of groups that were of greater magnitude than the community average. Future applications of this modeling framework should consider the circumstances under which data integration is appropriate given assumptions about shared abundance patterns and detection probabilities between data sources.
+Integrated community models—an emerging framework in which multiple data sources for multiple species are analyzed simultaneously—offer opportunities to expand inferences beyond the single-species and single-data source approaches common in ecology. We developed a novel integrated community model that combines distance sampling and single-visit count data; within the model, information is shared among data sources (via a joint likelihood) and species (via a random effects structure) to estimate abundance patterns across a community. Parameters relating to abundance are shared between data sources, while the model specifies separate observation processes for each data source. Simulations demonstrated that the model provided unbiased estimates of abundance and detection parameters even when detection probabilities vary between the data types. Simulations also showed that the integrated community model tended to provide more accurate and more precise parameter estimates than alternative single-species and single-datastream models. We applied the model to datasets on 11 herbivore species from the Masai Mara National Reserve, Kenya, and found considerable interspecific variation in response to local wildlife management practices: five species showed higher abundances in a region with passive conservation enforcement (median across species: 4.5x higher), three species showed higher abundances in a region with active conservation enforcement (median: 3.9x higher), and the remaining three species showed no abundance differences between the two regions. Furthermore, the hierarchical structure of the model revealed that the community average of abundance was slightly higher (posterior mean: by 0.20 animals) in the region with active conservation enforcement, but this difference was not statistically significant. Future applications of this modeling framework should consider the circumstances under which data integration is appropriate given assumptions about shared abundance patterns between data sources.
+
+![alt text](./figures/figure_01.png)
 
 ## Repository Directory
 
@@ -107,21 +109,23 @@ Integrated community models—an emerging framework in which multiple data sourc
 * [figures_s8_s9.pptx](./figures/figures_s8_s9.pptx) PPT file to annotate Figures S8 and S9
 
 ### [results](./results) Contains results files.
-* [herbivore_case_study_results_v04.RData](./resultsherbivore_case_study_results_v04.RData)  Model output for Mara herbivores case study. This .RData contains 4 objects
+* [herbivore_case_study_results_v01.RData](./results/herbivore_case_study_results_v01.RData)  Model output for Mara herbivores case study. This .RData contains 4 objects
   * **constants**. A list of constants used in Nimble model:
 
     | Variable name | Meaning |
     |---------------|---------|
     | NSPECIES | Number of species |
-    | NBINS | Number of distance bins |
+    | NBINS | Number of distance bins (distance sampling data) |
+    | NBINS_C | Number of distance bins for latent detection function for count data |
     | NDISTANCES | Number of distance observations |
     | NSURVEYS | Number of distance sampling surveys |
     | NCOUNTS | Number of count surveys |
-    | SP_GS | Species index for the group size data |
-    | SP_NG | Species index for the number-of-group data |
+    | SP_GS | Species index for the distance data |
+    | SP_NG | Species index for the abundance data (distance sampling) |
     | SP_TC | Species index for the count data |
-    | REGION_GS | Region index for the group size data |
-    | REGION_NG | Region index for the number-of-group data |
+    | REGION_NG | Region index for the abundance data |
+    | REGION_TC | Regon index for the count data |
+    | REGION_GS | Region index for the distance data |
     | NREGION | Number of regions |
 
   * **data**. A list of data used in the Nimble model:
@@ -129,14 +133,12 @@ Integrated community models—an emerging framework in which multiple data sourc
     | Variable name | Meaning |
     |---------------|---------|
     | MIDPOINT | Distance to the midpoint of each distance bin |
-    | yGS | Observed group sizes |
     | DCLASS | Observed distance class |
     | B_DS | Maximum distance to which animals are counted for distance sampling |
     | B_TC | Maximum distance to which animals are counted for counts |
     | V | Width of distance bins
-    | yNG | Observed number of groups (distance sampling) |
-    | yN_DS | Observed total number of animals (distance sampling |
-    | yN | Observed total number of animals (counts) |
+    | yN_DS | Observed count of animals (distance sampling |
+    | yN_TC | Observed count of animals (counts) |
     | OFFSET_DS | Area offset for distance sampling transects |
     | OFFSET_TC | Area offset for count transects |
     | MASS | Body mass of each species |
@@ -144,74 +146,24 @@ Integrated community models—an emerging framework in which multiple data sourc
   * **out**. A list of the MCMC chains with the posterior samples for model parameters.
   * **model.code**. Code for the Nimble model.
 
-* [main_simulation_results_v01.RData](./results/main_simulation_results_v01.RData)  Summarized results from main simulation. This .RData file contains 4 dataframes:
-  * **icm_a1**. This summarizes model estimates of a covariate effect:
+* [cc.RData](./results/cc.RData) Simulation results for community count-only model. This .RData contains one dataframe named cc, with the following variables:
 
     | Variable name | Meaning |
     |---------------|---------|
-    | simrep | Which replicate simulation (1 through 100) |
-    | sp | Species id |
-    | mean | Posterior mean of difference between estimate and true value |
-    | sd | Posterior standard deviation of difference between estimate and true value |
-    | l95 | Lower bound of 95% credible interval of difference between estimate and true value |
-    | u95 | Upper bound of 95% credible interval of difference between estimate and true value |
-    | contain0 | Does the 95% credible interval of the difference between the estimate and true value contain 0? |
-    | nsites_tc_fact | Which relative data amount scenario? 1 = same number of distance sampling and count transects, 4 = 4x more count transects |
-    | p_bias | Which relative detectability scenario?  -1 = count detectability 10% lower, 0 = same detectability |
-    
-  * **icm_info**. True values of parameters used to simulate data:
+    | model | Model identifier, here "cc" (for count community) |
+    | simrep | Replicate simulation |
+    | param | Name of parameter |
+    | sp | Species identifier |
+    | nobs | Total number of individuals for that species counted across sites |
+    | truth | True value of parameter |
+    | mean | Posterior mean of parameter estimate |
+    | sd | Posterior standard deviation of parameter estimate |
+    | 2.5% | Lower bound of 95% credible interval for estimate |
+    | 97.5% | Upper bound of 95% credible interval for estimate |
+    | Rhat | Convergence diagnostic for parameter |
 
-    | Variable name | Meaning |
-    |---------------|---------|
-    | sp | Species id |
-    | totDS | Total number of individuals at distance sampling sites |
-    | totTC | Total number of individuals at count sites |
-    | alpha0 | Number-of-groups intercept |
-    | alpha1 | Effect of covariate on number-of-groups |
-    | beta0 | Group size intercept |
-    | gamma0 | Intercept for scale parameter in detection function |
-    | zeta | Hyperparameter for number-of-group overdispersion |
-    | xi | Hyperparameter for group size overdispersion |
-    | simrep | Which replicate simulation (1 through 100) |
-    
-  * **icm_n_ds_rb**. Relative bias of estimated abundance underlying distance sampling data:
-
-    | Variable name | Meaning |
-    |---------------|---------|
-    | simrep | Which replicate simulation (1 through 100) |
-    | sp | Species id |
-    | mean | Posterior mean of relative bias |
-    | sd | Posterior sd of relative bias |
-    | l95 | Lower bound of 95% credible interval for relative bias |
-    | u95 | Upper bound of 95% credible interval for relative bias |
-    | contain0 | Does the 95% credible interval for relative bias contain 0 (no bias) |
-    | nsites_tc_fact | Which relative data amount scenario? 1 = same number of distance sampling and count transects, 4 = 4x more count transects |
-    | p_bias | Which relative detectability scenario?  -1 = count detectability 10% lower, 0 = same detectability |
-
-  * **icm_n_tc_rb**. Relative bias of estimated abundance underlying count data. Same variable definitions as above.   
-* [simulation_alternative_model_results_v01.RData](./results/simulation_alternative_model_results_v01.RData)  Summarised results for alternative model simulations. This .RData file contains 3 data frames:
-  * **alpha1_truth_minus_estimate**. Summarises estimates of covariate effect on the number-of-groups:
-
-    | Variable name | Meaning |
-    |---------------|---------|
-    | model | Which model (CC = community count only, CDS = community distance sampling only, ISS = integrated single species, SSC = single species count, SSDS = single species distance sampling) |
-    | species | Which species class - pulled out representative rare and common species from each simrep |
-    | mean | Posterior mean of the difference between the true and estimated value for covariate effect |
-    | sd | Posterior standard deviation of the difference between the true and estimated value for covariate effect |
-    | l95 | Lower bound of the 95% credible interval for the difference between the true and estimated value for covariate effect |
-    | u95 | Upper bound of the 95% credible interval for the difference between the true and estimated value for covariate effect |
-    | contain0 | Does the 95% credible interval of the difference between the true and estimated value for covariate effect include 0 (unbiased) |
-
-  * **count_abundance_rb**. Summarizes the relative bias of abundance at the count sites:
-
-    | Variable name | Meaning |
-    |---------------|---------|
-    | model |  Which model (CC = community count only, CDS = community distance sampling only, ISS = integrated single species, SSC = single species count, SSDS = single species distance sampling) |
-    | species | Which species class - pulled out representative rare and common species from each simrep |
-    | mean | Posterior mean of the relative bias of the abundance estimates for the count sites |
-    | sd | Posterior standard deviation of the relative bias of the abundance estimates for the count sites |
-    | l95 | Lower bound of the 95% credible interval for the relative bias of the abundance estimates for the count sites  |
-    | u95 | Upper bound of the 95% credible interval for the relative bias of the abundance estimates for the count sites |
-    | contain0 | Does the 95% credible interval for relative bias include 0 (unbiased) |
-
-  * **ds_abundance_rb**. Summarizes the relative bias of abundance at the distance sampling sites. Same variables & definitions as above.
+* [dc.RData](./results/dc.RData) Simulation results for community distance-sampling-only model. This .RData contains one dataframe named dc, which has the same variable names as cc (see above)
+* [ic.RData](./results/ic.RData) Simulation results for community integrated model. This .RData contains one dataframe named ic, which has the same variable names as cc (see above)
+* [cs.RData](./results/cs.RData) Simulation results for single-species count-only model. This .RData contains one dataframe named cs, which has the same variable names as cc (see above)
+* [ds.RData](./results/ds.RData) Simulation results for single-species distance-sampling-only model. This .RData contains one dataframe named ds, which has the same variable names as cc (see above)
+* [is.RData](./results/is.RData) Simulation results for single-species integrated model. This .RData contains one dataframe named is, which has the same variable names as cc (see above)
