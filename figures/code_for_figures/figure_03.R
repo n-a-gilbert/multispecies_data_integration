@@ -125,7 +125,7 @@ all |>
   ggplot2::scale_fill_manual(values = MetPalettes$Hiroshige[[1]][c(7,9)])+
   ggplot2::guides(fill = guide_legend(reverse = T)) +
   ggplot2::theme_classic() +
-  ggplot2::labs(x = "Estimate - truth",
+  ggplot2::labs(x = "Posterior mean - true value",
                 y = "Model") +
   ggplot2::theme( strip.background = element_blank(), 
                   axis.line = element_line(color = "black", size = 0.2),
