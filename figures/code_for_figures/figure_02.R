@@ -36,8 +36,15 @@ rb_label <- ic_clean |>
   dplyr::arrange(param) |> 
   tibble::add_column( y = c(3379.6, 1940.4, 2088.1, 1539.3, 214349.1, 411098.8),
                       diff = c(1.62511451524311, 0.482292718683334, 0.571734517221783, 0.745914880139566, 
-                               11.997, 11.9998))
-
+                               11.997, 11.9998)) |> 
+  dplyr::mutate(param = factor(param, 
+                               levels = c(
+                                 "Detection intercept (distance sampling)",
+                                 "Detection intercept (counts)",
+                                 "Abundance intercept", 
+                                 "Abundance covariate coefficient",
+                                 "Abundance (distance sampling)",
+                                 "Abundance (counts)")))
 ic_clean |> 
   dplyr::filter(param %in% c(
     "alpha0",
@@ -54,10 +61,10 @@ ic_clean |>
                                                            "Abundance (counts)")))))) |> 
   dplyr::mutate(param = factor(param, 
                                levels = c(
-                                 "Abundance intercept", 
-                                 "Abundance covariate coefficient",
                                  "Detection intercept (distance sampling)",
                                  "Detection intercept (counts)",
+                                 "Abundance intercept", 
+                                 "Abundance covariate coefficient",
                                  "Abundance (distance sampling)",
                                  "Abundance (counts)"))) |> 
   # filter(abs(diff) < 20) |> 
