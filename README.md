@@ -2,7 +2,7 @@
 
 ### [Neil A. Gilbert](https://gilbertecology.com), [Caroline M. Blommel](https://www.researchgate.net/profile/Caroline-Blommel), [Matthew T. Farr](https://farrmt.github.io/), [David S. Green](https://scholar.google.com/citations?user=zZf1ct0AAAAJ), [Kay E. Holekamp](https://www.holekamplab.org/), [Elise F. Zipkin](https://zipkinlab.org/)
 
-### Data/code DOI: To be added upon acceptance
+### Data/code DOI: [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.10968910.svg)](https://doi.org/10.5281/zenodo.10968910)
 
 #### Please contact the first author for questions about the code or data: Neil A. Gilbert (neil.allen.gilbert@gmail.com)
 __________________________________________________________________________________________________________________________________________
